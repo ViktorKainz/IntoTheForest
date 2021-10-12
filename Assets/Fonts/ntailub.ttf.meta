@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 9847c283fca59984cb6f88c9795f469d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Microsoft New Tai Lue
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f04b60ad5c0b1f54589a341a5d2f318c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 396d6861898ba27449e2d579ead9bfc8
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Gadugi
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b2d14cc704fc981468e5af88dfa5c46c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
