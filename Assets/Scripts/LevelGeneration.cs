@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public struct Field
 {
@@ -19,10 +21,9 @@ public class LevelGeneration : MonoBehaviour
     {
         terrain = gameObject.GetComponent<Terrains>();
         GenerateLevel();
-        var camera = GameObject.FindGameObjectWithTag("MainCamera");
         var size = terrain.plain.GetComponent<Renderer>().bounds.size;
-        camera.transform.position = new Vector3(levelSize / 2 * size.x, 900, levelSize / 2 * size.z);
-        camera.transform.rotation = Quaternion.Euler (90, 0, 0);
+        Camera.main.transform.position = new Vector3(levelSize / 2f * size.x, 900, levelSize / 2f * size.z);
+        Camera.main.transform.rotation = Quaternion.Euler (90, 0, 0);
     }
 
     public void GenerateLevel()
