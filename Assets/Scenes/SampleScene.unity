@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -314,6 +314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainSpeed: 1000
   camSens: 0.25
+  minHeight: 200
+  maxHeight: 5000
 --- !u!1 &1672431815
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,8 +347,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSize: 10
-  noiseScale: 1.1
+  noiseScale: 10
   noiseSeed: 0
+  numberCastles: 5
 --- !u!4 &1672431817
 Transform:
   m_ObjectHideFlags: 0
@@ -378,3 +381,4 @@ MonoBehaviour:
   mountain: {fileID: 6239401530228197009, guid: 87af005b4ebc0f54b9d89f687c34e5a6, type: 3}
   plain: {fileID: 9043380465782437392, guid: 669fb4416940d6344bae66739384f4ef, type: 3}
   desert: {fileID: 7533924895596249569, guid: c9752690fea4d5947b418176fa156154, type: 3}
+  castle: {fileID: 5869709871278123825, guid: 12c5903e8e4b8664fbd6fa03247b84c0, type: 3}

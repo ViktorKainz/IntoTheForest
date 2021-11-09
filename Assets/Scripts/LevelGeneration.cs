@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Build;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +17,8 @@ public class LevelGeneration : MonoBehaviour
     public int levelSize;
     public float noiseScale = 1.1f;
     public float noiseSeed;
+    public int numberCastles;
+
     
     // Start is called before the first frame update
     void Start()
@@ -33,30 +37,72 @@ public class LevelGeneration : MonoBehaviour
         {
             noiseSeed = Random.value * noiseScale;
         }
-        foreach (int z in Enumerable.Range(0, levelSize).OrderBy(x => Random.Range(0, levelSize)))
+
+        List<Vector2> castleCoord = new List<Vector2>();
+        int minDist = levelSize / numberCastles + levelSize/10;
+        Boolean insert;
+        for(int i = 0; i < numberCastles; i++)
         {
-            foreach (int x in Enumerable.Range(0, levelSize).OrderBy(x => Random.Range(0, levelSize)))
+            int x = Random.Range(0, levelSize);
+            int z = Random.Range(0, levelSize);
+            insert = true;
+            if (level[x, z].plan == null)
             {
-                float sample = Mathf.PerlinNoise(x * noiseScale + noiseSeed, z * noiseScale + noiseSeed);
-                if (sample <= 0.20f)
+                foreach (Vector2 coords in castleCoord)
                 {
-                    level[x, z].plan = terrain.water;
+                    float difX = Math.Abs(coords.x - x);
+                    float difY = Math.Abs(coords.y - z);
+                    if (difX < minDist && difY < minDist)
+                    {
+                        insert = false;
+                    }
                 }
-                else if (sample <= 0.45f)
+                
+                if (insert)
                 {
-                    level[x, z].plan = terrain.plain;
-                }
-                else if (sample <= 0.60f)
-                {
-                    level[x, z].plan = terrain.forest;
-                }
-                else if (sample <= 0.70f)
-                {
-                    level[x, z].plan = terrain.desert;
+                    level[x, z].plan = terrain.castle;
+                    castleCoord.Add(new Vector2(x, z));
                 }
                 else
                 {
-                    level[x, z].plan = terrain.mountain;
+                    i--;
+                }
+            }
+            else
+            {
+                i--;
+            }
+
+        }
+
+        foreach (int z in Enumerable.Range(0, levelSize))
+        {
+            foreach (int x in Enumerable.Range(0, levelSize))
+            {
+                if (level[x, z].plan == null)
+                {
+                    float sample = Mathf.PerlinNoise(x * noiseScale + noiseSeed, z * noiseScale + noiseSeed);
+                    
+                    if (sample <= 0.20f)
+                    {
+                        level[x, z].plan = terrain.water;
+                    }
+                    else if (sample <= 0.45f)
+                    {
+                        level[x, z].plan = terrain.plain;
+                    }
+                    else if (sample <= 0.60f)
+                    {
+                        level[x, z].plan = terrain.forest;
+                    }
+                    else if (sample <= 0.70f)
+                    {
+                        level[x, z].plan = terrain.desert;
+                    }
+                    else
+                    {
+                        level[x, z].plan = terrain.mountain;
+                    }
                 }
                 var size = level[x, z].plan.GetComponent<Renderer>().bounds.size;
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z), level[x, z].plan.transform.rotation);

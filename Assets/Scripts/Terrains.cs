@@ -9,4 +9,5 @@ public class Terrains : MonoBehaviour
     public GameObject mountain;
     public GameObject plain;
     public GameObject desert;
+    public GameObject castle;
 }
