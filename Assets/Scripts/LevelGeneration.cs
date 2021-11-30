@@ -27,7 +27,7 @@ public class LevelGeneration : MonoBehaviour
         GenerateLevel();
         var size = terrain.plain.GetComponent<Renderer>().bounds.size;
         Camera.main.transform.position = new Vector3(levelSize / 2f * size.x, 900, levelSize / 2f * size.z);
-        Camera.main.transform.rotation = Quaternion.Euler (90, 0, 0);
+        Camera.main.transform.rotation = Quaternion.Euler (60, 0, 0);
     }
 
     public void GenerateLevel()
