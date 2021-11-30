@@ -9,6 +9,7 @@ public class CameraMovement : MonoBehaviour
     public float minFov = 15f;
     public float maxFov = 90f;
     public float sensitivity = 10f;
+    public Bounds bounds;
 
     void Update()
     {
@@ -28,11 +29,12 @@ public class CameraMovement : MonoBehaviour
         {
             v = new Vector3(-Input.GetAxis("Mouse X") * dragSpeed * scale, 0, -Input.GetAxis("Mouse Y") * dragSpeed * scale);
             pos += r * v;
-            //pos += transform.forward * Input.GetAxis("Mouse X") * dragSpeed * scale;
-            //pos.x -= Input.GetAxis("Mouse X") * dragSpeed * scale;
-            //pos.z -= Input.GetAxis("Mouse Y") * dragSpeed * scale;
         }
-        
+        if (Input.GetMouseButton(1))
+        {
+            Vector3 ea = transform.eulerAngles;
+            transform.eulerAngles = new Vector3(ea.x, ea.y + Input.GetAxis("Mouse X") * dragSpeed, ea.z);
+        }
         if (Input.GetKey(KeyCode.A))
         {
             v = new Vector3(-fov, 0, 0);
@@ -64,6 +66,9 @@ public class CameraMovement : MonoBehaviour
             transform.eulerAngles = new Vector3(ea.x, ea.y + 5, ea.z);
         }
         
-        transform.position = pos;
+        if (bounds.Contains(pos+new Vector3(0,-pos.y,0)))
+        {
+            transform.position = pos;
+        }
     }
 }
