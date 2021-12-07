@@ -25,14 +25,8 @@ public class LevelGeneration : MonoBehaviour
     {
         terrain = gameObject.GetComponent<Terrains>();
         GenerateLevel();
-        Vector3 size = terrain.plain.GetComponent<Renderer>().bounds.size;
-        Vector3 center = new Vector3(levelSize / 2f * size.x, 900, levelSize / 2f * size.z);
-        Camera.main.transform.position = center;
-        Camera.main.transform.rotation = Quaternion.Euler (60, 0, 0);
-        center.y = 0;
-        Vector3 b = center;
-        b *= 2.5f;
-        Camera.main.GetComponent<CameraMovement>().bounds = new Bounds(center, b);
+        Camera.main.GetComponent<CameraMovement>()
+            .Initialize(levelSize, terrain.plain.GetComponent<Renderer>().bounds.size.x);
     }
 
     public void GenerateLevel()
