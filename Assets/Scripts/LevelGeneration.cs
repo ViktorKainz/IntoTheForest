@@ -9,6 +9,7 @@ public struct Field
 {
     public GameObject obj;
     public GameObject plan;
+    public Quaternion rotation;
 }
 public class LevelGeneration : MonoBehaviour
 {
@@ -25,9 +26,8 @@ public class LevelGeneration : MonoBehaviour
     {
         terrain = gameObject.GetComponent<Terrains>();
         GenerateLevel();
-        var size = terrain.plain.GetComponent<Renderer>().bounds.size;
-        Camera.main.transform.position = new Vector3(levelSize / 2f * size.x, 900, levelSize / 2f * size.z);
-        Camera.main.transform.rotation = Quaternion.Euler (90, 0, 0);
+        Camera.main.GetComponent<CameraMovement>()
+            .Initialize(levelSize, terrain.plain.GetComponent<Renderer>().bounds.size.x);
     }
 
     public void GenerateLevel()
@@ -61,6 +61,7 @@ public class LevelGeneration : MonoBehaviour
                 if (insert)
                 {
                     level[x, z].plan = terrain.castle;
+                    level[x, z].rotation = Quaternion.Euler(new Vector3(0, Random.Range(1,4)*90 , 0));
                     castleCoord.Add(new Vector2(x, z));
                 }
                 else
@@ -87,22 +88,27 @@ public class LevelGeneration : MonoBehaviour
                     if (sample <= 0.20f)
                     {
                         level[x, z].plan = terrain.water;
+                        level[x, z].rotation = Quaternion.Euler(0, Random.Range(1,4)*90 , 0);
                     }
                     else if (sample <= 0.45f)
                     {
                         level[x, z].plan = terrain.plain;
+                        level[x, z].rotation = Quaternion.Euler(-90, Random.Range(1,4)*90, 0);
                     }
                     else if (sample <= 0.60f)
                     {
                         level[x, z].plan = terrain.forest;
+                        level[x, z].rotation = Quaternion.Euler(0, Random.Range(1,4)*90 , 0);
                     }
                     else if (sample <= 0.70f)
                     {
                         level[x, z].plan = terrain.desert;
+                        level[x, z].rotation = Quaternion.Euler(-90, Random.Range(1,4)*90, 0);
                     }
                     else
                     {
                         level[x, z].plan = terrain.mountain;
+                        level[x, z].rotation = Quaternion.Euler(-90, Random.Range(1,4)*90, 0);
                     }
                 }
                 var size = new Vector3(200,100,200);
@@ -110,6 +116,7 @@ public class LevelGeneration : MonoBehaviour
                 // level[x, z].plan.transform.rotation = Quaternion.Euler(new Vector3(level[x, z].plan.transform.rotation.x, Random.Range(1,4)*90 , level[x, z].plan.transform.rotation.z));
                 // level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z), Quaternion.Euler(new Vector3(level[x, z].plan.transform.rotation.x, Random.Range(1,4)*90 , level[x, z].plan.transform.rotation.z)));
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z), level[x, z].plan.transform.rotation);
+                level[x, z].obj.transform.rotation = level[x, z].rotation;
             }
         }
     }
