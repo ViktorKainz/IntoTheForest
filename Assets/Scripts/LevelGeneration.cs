@@ -112,9 +112,6 @@ public class LevelGeneration : MonoBehaviour
                     }
                 }
                 var size = new Vector3(200,100,200);
-                //ToDo add working rotation on y-axis dont change prefab
-                // level[x, z].plan.transform.rotation = Quaternion.Euler(new Vector3(level[x, z].plan.transform.rotation.x, Random.Range(1,4)*90 , level[x, z].plan.transform.rotation.z));
-                // level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z), Quaternion.Euler(new Vector3(level[x, z].plan.transform.rotation.x, Random.Range(1,4)*90 , level[x, z].plan.transform.rotation.z)));
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z), level[x, z].plan.transform.rotation);
                 level[x, z].obj.transform.rotation = level[x, z].rotation;
             }

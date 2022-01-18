@@ -43,27 +43,27 @@ public class CameraMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
-            pos += rotation * new Vector3(-fov, 0, 0);
+            pos += rotation * new Vector3(-fov * Time.deltaTime * dragSpeed, 0, 0);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            pos += rotation * new Vector3(fov, 0, 0);
+            pos += rotation * new Vector3(fov * Time.deltaTime * dragSpeed, 0, 0);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            pos += rotation * new Vector3(0, 0, -fov);
+            pos += rotation * new Vector3(0, 0, -fov * Time.deltaTime * dragSpeed);
         }
         if (Input.GetKey(KeyCode.W))
         {
-            pos += rotation * new Vector3(0, 0, fov);
+            pos += rotation * new Vector3(0, 0, fov * Time.deltaTime * dragSpeed);
         }   
         if (Input.GetKey(KeyCode.Q))
         {
-            angles.y -= fov/20;
+            angles.y -= fov/50;
         }
         if (Input.GetKey(KeyCode.E))
         {
-            angles.y += fov/20;
+            angles.y += fov/50;
         }
         if (Input.GetKey(KeyCode.C))
         {
