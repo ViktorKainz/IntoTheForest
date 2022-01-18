@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3887358176241121411}
   - component: {fileID: 1303331274942778441}
   - component: {fileID: 2784311477340824893}
+  - component: {fileID: 4071500018171589624}
   m_Layer: 0
   m_Name: desert
   m_TagString: Untagged
@@ -95,3 +96,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.9999998, z: 1}
   m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!114 &4071500018171589624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654887351552617884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 490d3ed3a57a5b846af79844c4e1b931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: Desert

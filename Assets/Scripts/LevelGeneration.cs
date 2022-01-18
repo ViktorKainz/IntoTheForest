@@ -10,6 +10,7 @@ public struct Field
     public GameObject obj;
     public GameObject plan;
     public Quaternion rotation;
+    public TerrainField field;
 }
 public class LevelGeneration : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class LevelGeneration : MonoBehaviour
     public float noiseScale = 1.1f;
     public float noiseSeed;
     public int numberCastles;
+    public Vector3 size = new Vector3(200,100,200);
 
     
     // Start is called before the first frame update
@@ -114,6 +116,10 @@ public class LevelGeneration : MonoBehaviour
                 var size = new Vector3(200,100,200);
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z), level[x, z].plan.transform.rotation);
                 level[x, z].obj.transform.rotation = level[x, z].rotation;
+                level[x, z].field = level[x, z].obj.GetComponent<TerrainField>();
+                level[x, z].field.x = x;
+                level[x, z].field.y = z;
+                level[x, z].field.level = this;
             }
         }
     }
