@@ -146,9 +146,13 @@ public class LevelGeneration : MonoBehaviour
         Vector3 newSpawn=level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.GetComponent<Transform>().position;
         newSpawn.y += 40;
         Instantiate(player,newSpawn , Quaternion.Euler(0,0,0));
+        GameObject castleFlag = level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag.GetComponent<Renderer>().material.color = Color.red;
         newSpawn=level[(int)spawnAtCastle2.x, (int)spawnAtCastle2.y].obj.GetComponent<Transform>().position;
         newSpawn.y += 40;
         Instantiate(player,newSpawn , Quaternion.Euler(0,0,0));
+        castleFlag = level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag.GetComponent<Renderer>().material.color = Color.green;
     }
     
     // Update is called once per frame
