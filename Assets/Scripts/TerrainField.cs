@@ -10,7 +10,8 @@ public class TerrainField : MonoBehaviour
     public int x;
     public int y;
     
-    private Color startcolor;
+    private Color[][] startColors;
+    private Boolean selected;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +31,57 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Debug.Log(type + " x: " + x + " y: " + y);
         var renderer = GetComponent<Renderer>();
-        startcolor = renderer.material.color;
-        renderer.material.color = Color.yellow;
-        Debug.Log(renderer.material.color); 
+        var children = GetComponentsInChildren<Renderer>();
+        if (selected)
+        {
+            if (renderer.materials.Length > 1)
+            {
+                for (var i = 0; i < renderer.materials.Length; i++)
+                {
+                    renderer.materials[i].color = startColors[0][i];
+                }
+            }
+            else
+            {
+                renderer.material.color = startColors[0][0];
+            }
+            for (var i = 0; i < children.Length; i++)
+            {
+                for (var j = 0; j < children[i].materials.Length; j++)
+                {
+                    children[i].materials[j].color = startColors[i+1][j];
+                }
+            }
+            selected = false;
+        }
+        else
+        {
+            startColors = new Color[children.Length+1][];
+            startColors[0] = new Color[renderer.materials.Length];
+            if (renderer.materials.Length > 1)
+            {
+                for (var i = 0; i < renderer.materials.Length; i++)
+                {
+                    startColors[0][i] = renderer.materials[i].color;
+                    renderer.materials[i].color = Color.yellow;
+                }
+            }
+            else
+            {
+                startColors[0][0] = renderer.material.color;
+            }
+            
+            for (var i = 0; i < children.Length; i++)
+            {
+                startColors[i + 1] = new Color[children[i].materials.Length];
+                for (var j = 0; j < children[i].materials.Length; j++)
+                {
+                    startColors[i+1][j] = children[i].materials[j].color;
+                    children[i].materials[j].color = Color.yellow;
+                }
+            }
+            selected = true;
+        }
     }
 }
