@@ -110,6 +110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: Grass
   level: {fileID: 0}
-  figure: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
+  figure: {fileID: 0}
   x: 0
   y: 0
