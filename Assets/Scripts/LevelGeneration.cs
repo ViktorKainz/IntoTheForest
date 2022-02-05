@@ -12,6 +12,7 @@ public struct Field
     public Quaternion rotation;
     public TerrainField field;
 }
+
 public class LevelGeneration : MonoBehaviour
 {
     private Field[,] level;
@@ -21,7 +22,7 @@ public class LevelGeneration : MonoBehaviour
     public float noiseSeed;
     public int numberCastles;
     public Vector3 size = new Vector3(200,100,200);
-
+    public GameObject player;
     
     // Start is called before the first frame update
     void Start()
@@ -64,7 +65,8 @@ public class LevelGeneration : MonoBehaviour
                 {
                     level[x, z].plan = terrain.castle;
                     level[x, z].rotation = Quaternion.Euler(new Vector3(0, Random.Range(1,4)*90 , 0));
-                    castleCoord.Add(new Vector2(x, z));
+                    Vector2 castleLoc = new Vector2(x, z);
+                    castleCoord.Add(castleLoc);
                 }
                 else
                 {
@@ -122,8 +124,40 @@ public class LevelGeneration : MonoBehaviour
                 level[x, z].field.level = this;
             }
         }
+        spawnPlayers(castleCoord);
     }
 
+    void spawnPlayers(List<Vector2> castleLoc)
+    {
+        float maxDistance = 0;
+        Vector2 spawnAtCastle1 = new Vector2(0,0);
+        Vector2 spawnAtCastle2 = new Vector2(0,0);
+        foreach (Vector2 castle1 in castleLoc)
+        {
+            foreach (Vector2 castle2 in castleLoc)
+            {
+                float currentDistance = Vector2.Distance(castle1, castle2);
+                if (currentDistance > maxDistance)
+                {
+                    maxDistance = currentDistance;
+                    spawnAtCastle1 = castle1;
+                    spawnAtCastle2 = castle2;
+                }
+            }
+        }
+
+        Vector3 newSpawn=level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.GetComponent<Transform>().position;
+        newSpawn.y += 40;
+        Instantiate(player,newSpawn , Quaternion.Euler(0,0,0));
+        GameObject castleFlag = level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag.GetComponent<Renderer>().material.color = Color.red;
+        newSpawn=level[(int)spawnAtCastle2.x, (int)spawnAtCastle2.y].obj.GetComponent<Transform>().position;
+        newSpawn.y += 40;
+        Instantiate(player,newSpawn , Quaternion.Euler(0,0,0));
+        castleFlag = level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag.GetComponent<Renderer>().material.color = Color.green;
+    }
+    
     // Update is called once per frame
     void Update()
     {
