@@ -135,6 +135,9 @@ public class LevelGeneration : MonoBehaviour
         Vector2 spawnAtCastle2 = new Vector2(0, 0);
         foreach (Vector2 castle1 in castleLoc)
         {
+            GameObject flag =
+                level[(int)castle1.x, (int)castle1.y].obj.transform.Find("Flag").gameObject;
+            flag.GetComponent<Renderer>().material.color = Color.white;
             foreach (Vector2 castle2 in castleLoc)
             {
                 float currentDistance = Vector2.Distance(castle1, castle2);
@@ -150,7 +153,7 @@ public class LevelGeneration : MonoBehaviour
             level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
         
-        castleFlag = level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag = level[(int)spawnAtCastle2.x, (int)spawnAtCastle2.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.green;
 
         spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1);
