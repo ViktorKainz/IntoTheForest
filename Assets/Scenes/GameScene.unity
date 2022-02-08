@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.70043206, g: 0.7788845, b: 0.76724935, a: 1}
+  m_IndirectSpecularColor: {r: 0.70184445, g: 0.780185, b: 0.7678746, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -13217,6 +13217,9 @@ MonoBehaviour:
   noiseScale: 10
   noiseSeed: 0
   numberCastles: 5
+  size: {x: 200, y: 100, z: 200}
+  player: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
+  selected: {fileID: 0}
 --- !u!4 &1672431817
 Transform:
   m_ObjectHideFlags: 0
