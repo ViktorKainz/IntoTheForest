@@ -48,29 +48,14 @@ public class TerrainField : MonoBehaviour
 
     public void selectField()
     {
-        var renderer = GetComponent<Renderer>();
         var children = GetComponentsInChildren<Renderer>();
-        startColors = new Color[children.Length+1][];
-        startColors[0] = new Color[renderer.materials.Length];
-        if (renderer.materials.Length > 1)
-        {
-            for (var i = 0; i < renderer.materials.Length; i++)
-            {
-                startColors[0][i] = renderer.materials[i].color;
-                renderer.materials[i].color = Color.yellow;
-            }
-        }
-        else
-        {
-            startColors[0][0] = renderer.material.color;
-        }
-            
+        startColors = new Color[children.Length][];
         for (var i = 0; i < children.Length; i++)
         {
-            startColors[i + 1] = new Color[children[i].materials.Length];
+            startColors[i] = new Color[children[i].materials.Length];
             for (var j = 0; j < children[i].materials.Length; j++)
             {
-                startColors[i+1][j] = children[i].materials[j].color;
+                startColors[i][j] = children[i].materials[j].color;
                 children[i].materials[j].color = Color.yellow;
             }
         }
@@ -78,24 +63,12 @@ public class TerrainField : MonoBehaviour
     
     public void unselectField()
     {
-        var renderer = GetComponent<Renderer>();
-        if (renderer.materials.Length > 1)
-        {
-            for (var i = 0; i < renderer.materials.Length; i++)
-            {
-                renderer.materials[i].color = startColors[0][i];
-            }
-        }
-        else
-        {
-            renderer.material.color = startColors[0][0];
-        }
         var children = GetComponentsInChildren<Renderer>();
         for (var i = 0; i < children.Length; i++)
         {
             for (var j = 0; j < children[i].materials.Length; j++)
             {
-                children[i].materials[j].color = startColors[i+1][j];
+                children[i].materials[j].color = startColors[i][j];
             }
         }
     }
