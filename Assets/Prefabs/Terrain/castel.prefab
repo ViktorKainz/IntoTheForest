@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 6325851228560322567}
   - component: {fileID: 7351756106748913735}
   - component: {fileID: 5366526852784693206}
+  - component: {fileID: 4373316004279382998}
   m_Layer: 0
   m_Name: castel
   m_TagString: Untagged
@@ -279,6 +280,20 @@ MonoBehaviour:
   figure: {fileID: 0}
   x: 0
   y: 0
+  speed: 100
+--- !u!114 &4373316004279382998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2757828273520223936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7adefcabb0cc376448fbfa3cf07a678b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 8793459136721190735, guid: 415b89904abd16c4aa1370315eb798e8, type: 3}
 --- !u!1 &3815733076633831147
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +386,7 @@ GameObject:
   - component: {fileID: 5053258691353801784}
   - component: {fileID: 8550795295271805573}
   - component: {fileID: 8953748072595579609}
+  - component: {fileID: 672040263313106617}
   m_Layer: 0
   m_Name: Castle_
   m_TagString: Untagged
@@ -441,3 +457,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &672040263313106617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4148725112006633731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7adefcabb0cc376448fbfa3cf07a678b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 8793459136721190735, guid: 415b89904abd16c4aa1370315eb798e8, type: 3}
