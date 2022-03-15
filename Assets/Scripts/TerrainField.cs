@@ -9,10 +9,10 @@ public class TerrainField : MonoBehaviour
     public GameObject figure;
     public int x;
     public int y;
+    public float speed = 100f;
     
-    private Color[][] startColors;
+    private Color[][] _startColors;
 
-    // Start is called before the first frame update
     void Start()
     {
         if (figure != null)
@@ -21,54 +21,82 @@ public class TerrainField : MonoBehaviour
             figure.transform.parent = transform;
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
-        
+        if (figure != null)
+        {
+            figure.transform.position = Vector3.MoveTowards(figure.transform.position,
+                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * 1000);
+        }
     }
 
     private void OnMouseUp()
     {
-        if (level.selected == this)
+        var s = level.selected;
+        if (s == this)
         {
-            unselectField();
+            UnselectField();
             level.selected = null;
         }
         else
         {
-            if (level.selected != null)
+            if (s != null)
             {
-                level.selected.unselectField();
+                s.UnselectField();
+                if (((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
+                     (s.y == y && (s.x - 1 == x || s.x + 1 == x))) &&
+                    s.figure != null)
+                {
+                    figure = s.figure;
+                    figure.transform.parent = transform;
+                    if (s.x < x)
+                    {
+                        figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    }
+                    else if (s.x > x)
+                    {
+                        figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+                    }
+                    else if (s.y < y)
+                    {
+                        figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else if (s.y > y)
+                    {
+                        figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    s.figure = null;
+                }
             }
-            selectField();
+            SelectField();
             level.selected = this;
         }
     }
 
-    public void selectField()
+    private void SelectField()
     {
         var children = GetComponentsInChildren<Renderer>();
-        startColors = new Color[children.Length][];
+        _startColors = new Color[children.Length][];
         for (var i = 0; i < children.Length; i++)
         {
-            startColors[i] = new Color[children[i].materials.Length];
+            _startColors[i] = new Color[children[i].materials.Length];
             for (var j = 0; j < children[i].materials.Length; j++)
             {
-                startColors[i][j] = children[i].materials[j].color;
+                _startColors[i][j] = children[i].materials[j].color;
                 children[i].materials[j].color = Color.yellow;
             }
         }
     }
-    
-    public void unselectField()
+
+    private void UnselectField()
     {
         var children = GetComponentsInChildren<Renderer>();
         for (var i = 0; i < children.Length; i++)
         {
             for (var j = 0; j < children[i].materials.Length; j++)
             {
-                children[i].materials[j].color = startColors[i][j];
+                children[i].materials[j].color = _startColors[i][j];
             }
         }
     }

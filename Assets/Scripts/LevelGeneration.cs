@@ -113,8 +113,6 @@ public class LevelGeneration : MonoBehaviour
                         level[x, z].rotation = Quaternion.Euler(-90, Random.Range(1, 4) * 90, 0);
                     }
                 }
-
-                var size = new Vector3(200, 100, 200);
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z),
                     level[x, z].plan.transform.rotation);
                 level[x, z].obj.transform.rotation = level[x, z].rotation;
@@ -135,6 +133,9 @@ public class LevelGeneration : MonoBehaviour
         Vector2 spawnAtCastle2 = new Vector2(0, 0);
         foreach (Vector2 castle1 in castleLoc)
         {
+            GameObject flag =
+                level[(int)castle1.x, (int)castle1.y].obj.transform.Find("Flag").gameObject;
+            flag.GetComponent<Renderer>().material.color = Color.white;
             foreach (Vector2 castle2 in castleLoc)
             {
                 float currentDistance = Vector2.Distance(castle1, castle2);
@@ -146,19 +147,20 @@ public class LevelGeneration : MonoBehaviour
                 }
             }
         }
+
         GameObject castleFlag =
-            level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+            level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
-        
-        castleFlag = level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+
+        castleFlag = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.green;
 
         spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1);
-        level[(int)spawnAtCastle1.x, (int)spawnAtCastle1.y].field.figure = player;
-        
+
+        level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field.figure = player;
+
         spawnAtCastle2 = randomSpawnOffset(spawnAtCastle2);
-        level[(int)spawnAtCastle2.x, (int)spawnAtCastle2.y].field.figure = player;
-        
+        level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field.figure = player;
     }
 
     private Vector2 randomSpawnOffset(Vector2 position)
@@ -181,6 +183,7 @@ public class LevelGeneration : MonoBehaviour
                     continue;
             }
         }
+
         return position;
     }
 
