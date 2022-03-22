@@ -517,6 +517,9 @@ MonoBehaviour:
   queenBt: {fileID: 8793459137459057105}
   knightBt: {fileID: 8793459136601993450}
   pawnBt: {fileID: 8793459137642776694}
+  queenPrefab: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
+  knightPrefab: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
+  pawnPrefab: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
   castle: {fileID: 0}
 --- !u!1 &8793459136960731966
 GameObject:

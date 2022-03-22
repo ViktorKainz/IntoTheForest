@@ -16,12 +16,16 @@ namespace DefaultNamespace
 
         public GameObject castle;
         
+        private Vector3 size = new Vector3(200, 100, 200);
+        
         // Start is called before the first frame update
         void Start()
         {
             gameObject.SetActive(false);
             closeBt.onClick.AddListener(() => gameObject.SetActive(false));
             queenBt.onClick.AddListener(() => spawnRandomAroundCastle(queenPrefab));
+            knightBt.onClick.AddListener(() => spawnRandomAroundCastle(knightPrefab));
+            pawnBt.onClick.AddListener(() => spawnRandomAroundCastle(pawnPrefab));
         }
 
         // Update is called once per frame
@@ -36,7 +40,10 @@ namespace DefaultNamespace
                 new Vector2(castle.GetComponent<TerrainField>().x, castle.GetComponent<TerrainField>().y);
                 Field[,] level = castle.GetComponent<TerrainField>().level.getLevel();
                 
-           
+                var spawnPos = LevelGeneration.randomSpawnOffset(castlePosition, level.Length);
+                TerrainField f = level[(int) spawnPos.x, (int) spawnPos.y].field;
+                f.figure = Instantiate(spawnFigure, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
+                f.figure.GetComponent<GameFigure>().enemy = false;
         }
         
     }

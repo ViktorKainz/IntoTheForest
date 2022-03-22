@@ -21,9 +21,9 @@ public class SpawnFigure : MonoBehaviour
         
     }
 
-    private void OnMouseDown()
+    private void OnMouseUp()
     {
-        canvas.SetActive(!canvas.activeSelf);
+        canvas.SetActive(true);
     }
 
     public void setInactive()

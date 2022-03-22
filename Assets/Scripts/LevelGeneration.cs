@@ -157,18 +157,18 @@ public class LevelGeneration : MonoBehaviour
         castleFlag = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
 
-        spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1);
-        var f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
+        spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1, levelSize);
+        TerrainField f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
         f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
         f.figure.GetComponent<GameFigure>().enemy = false;
 
-        spawnAtCastle2 = randomSpawnOffset(spawnAtCastle2);
+        spawnAtCastle2 = randomSpawnOffset(spawnAtCastle2, levelSize);
         f = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field;
         f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
         f.figure.GetComponent<GameFigure>().enemy = true;
     }
 
-    public Vector2 randomSpawnOffset(Vector2 position)
+    public static Vector2 randomSpawnOffset(Vector2 position, int levelSize)
     {
         foreach (int option in Enumerable.Range(0, 4).OrderBy(x => Random.Range(0, 4)))
         {
@@ -200,5 +200,10 @@ public class LevelGeneration : MonoBehaviour
     public Field[,] getLevel()
     {
         return level;
+    }    
+    
+    public Terrains getTerrain()
+    {
+        return terrain;
     }
 }

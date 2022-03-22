@@ -30,6 +30,18 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
+        //Deactivate FigureCanvas from every castle
+        if (level.selected == null)
+        {
+            Field[,] lvl = level.getLevel();
+            foreach (Field field in lvl)
+            {
+                if (field.plan == level.getTerrain().castle)
+                {
+                    field.obj.GetComponent<SpawnFigure>().setInactive();
+                }
+            }   
+        }
         if (type == TerrainType.Castle)
         {
             return;
