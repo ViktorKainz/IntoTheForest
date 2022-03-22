@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-
+using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 
 public class SettingsmenuScript : MonoBehaviour
@@ -24,7 +25,7 @@ public class SettingsmenuScript : MonoBehaviour
         qualityDropdown.ClearOptions();
         textureDropdown.ClearOptions();
         aaDropdown.ClearOptions();
-		List<string> resOptions = new List<string>();
+        List<string> resOptions = new List<string>();
 		resolutions = Screen.resolutions;
 		int currentResolutionIndex = 0;
 
@@ -69,7 +70,7 @@ public class SettingsmenuScript : MonoBehaviour
 		aaDropdown.RefreshShownValue();
 		
 		
-		
+		resolutionDropdown.GetComponent<GameObject>().layer= 5;
 		
 		
 		
