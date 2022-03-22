@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: fcd0fe5e7adceeb48bbdd611a64416af
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Perpetua
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b2d90ce235e583b4599a408f24b21e98, type: 3}
+  - {fileID: 12800000, guid: e1da5da60eee09e48bef4366c49ebe5e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

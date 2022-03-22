@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 69234a5eab20bbd458c430454f35e7da
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Nirmala UI
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c602dbc16e864cc45988b424614943e5, type: 3}
+  - {fileID: 12800000, guid: b2e47971f9f16da40959b73c42d6d994, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
