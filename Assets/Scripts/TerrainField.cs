@@ -16,53 +16,49 @@ public class TerrainField : MonoBehaviour
     void Start()
     {
         if (figure != null)
-        {
             figure.transform.parent = transform;
-        }
     }
 
     private void Update()
     {
         if (figure != null)
-        {
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
                 new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * 1000);
-        }
     }
 
     private void OnMouseUp()
     {
-        var s = level.selected;
-        if (s == this || type == TerrainType.Castle)
+        var selected = level.selected;
+        if (selected == this || type == TerrainType.Castle)
         {
-            if (s != null)
-                s.UnselectField();
+            if (selected != null)
+                selected.UnselectField();
             level.selected = null;
             return;
         }
 
-        if (s != null)
+        if (selected != null)
         {
-            s.UnselectField();
-            if (s.figure != null)
+            selected.UnselectField();
+            if (selected.figure != null)
             {
-                if (IsMovable(s))
+                if (IsMovable(selected))
                 {
-                    if ((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
-                        (s.y == y && (s.x - 1 == x || s.x + 1 == x)))
+                    if ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
+                        (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x)))
                     {
-                        figure = s.figure;
+                        figure = selected.figure;
                         figure.transform.parent = transform;
-                        if (s.x < x)
+                        if (selected.x < x)
                             figure.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        else if (s.x > x)
+                        else if (selected.x > x)
                             figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        else if (s.y < y)
+                        else if (selected.y < y)
                             figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        else if (s.y > y)
+                        else if (selected.y > y)
                             figure.transform.rotation = Quaternion.Euler(0, 180, 0);
 
-                        s.figure = null;
+                        selected.figure = null;
                         round++;
                     }
                 }
@@ -71,14 +67,10 @@ public class TerrainField : MonoBehaviour
 
         level.selected = this;
 
-        if (figure != null && IsMovable(s))
-        {
+        if (figure != null && IsMovable(selected))
             SelectSuccess();
-        }
         else
-        {
             SelectError();
-        }
     }
 
     private void SelectSuccess()
@@ -111,12 +103,8 @@ public class TerrainField : MonoBehaviour
         if (_startColors == null) return;
         var children = GetComponentsInChildren<Renderer>();
         for (var i = 0; i < children.Length; i++)
-        {
-            for (var j = 0; j < children[i].materials.Length; j++)
-            {
-                children[i].materials[j].color = _startColors[i][j];
-            }
-        }
+        for (var j = 0; j < children[i].materials.Length; j++)
+            children[i].materials[j].color = _startColors[i][j];
     }
 
     private bool IsMovable(TerrainField f)

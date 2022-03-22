@@ -16,12 +16,6 @@ public class GameFigure : MonoBehaviour
             }
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
 
 public enum FigureType

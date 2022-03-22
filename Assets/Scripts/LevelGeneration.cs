@@ -24,7 +24,6 @@ public class LevelGeneration : MonoBehaviour
     public GameObject player;
     public TerrainField selected;
 
-    // Start is called before the first frame update
     void Start()
     {
         terrain = gameObject.GetComponent<Terrains>();
@@ -37,9 +36,7 @@ public class LevelGeneration : MonoBehaviour
     {
         level = new Field[levelSize, levelSize];
         if (noiseSeed == 0)
-        {
             noiseSeed = Random.value * noiseScale;
-        }
 
         List<Vector2> castleCoord = new List<Vector2>();
         int minDist = levelSize / numberCastles + levelSize / 10;
@@ -56,9 +53,7 @@ public class LevelGeneration : MonoBehaviour
                     float difX = Math.Abs(coords.x - x);
                     float difY = Math.Abs(coords.y - z);
                     if (difX < minDist && difY < minDist)
-                    {
                         insert = false;
-                    }
                 }
 
                 if (insert)
@@ -68,15 +63,9 @@ public class LevelGeneration : MonoBehaviour
                     Vector2 castleLoc = new Vector2(x, z);
                     castleCoord.Add(castleLoc);
                 }
-                else
-                {
-                    i--;
-                }
+                else i--;
             }
-            else
-            {
-                i--;
-            }
+            else i--;
         }
 
         foreach (int z in Enumerable.Range(0, levelSize))
@@ -189,10 +178,5 @@ public class LevelGeneration : MonoBehaviour
         }
 
         return position;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }
