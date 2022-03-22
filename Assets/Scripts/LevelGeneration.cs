@@ -113,6 +113,7 @@ public class LevelGeneration : MonoBehaviour
                         level[x, z].rotation = Quaternion.Euler(-90, Random.Range(1, 4) * 90, 0);
                     }
                 }
+
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z),
                     level[x, z].plan.transform.rotation);
                 level[x, z].obj.transform.rotation = level[x, z].rotation;
@@ -134,7 +135,7 @@ public class LevelGeneration : MonoBehaviour
         foreach (Vector2 castle1 in castleLoc)
         {
             GameObject flag =
-                level[(int)castle1.x, (int)castle1.y].obj.transform.Find("Flag").gameObject;
+                level[(int) castle1.x, (int) castle1.y].obj.transform.Find("Flag").gameObject;
             flag.GetComponent<Renderer>().material.color = Color.white;
             foreach (Vector2 castle2 in castleLoc)
             {
@@ -150,17 +151,20 @@ public class LevelGeneration : MonoBehaviour
 
         GameObject castleFlag =
             level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
-        castleFlag.GetComponent<Renderer>().material.color = Color.red;
-
-        castleFlag = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.green;
 
-        spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1);
+        castleFlag = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag.GetComponent<Renderer>().material.color = Color.red;
 
-        level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field.figure = player;
+        spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1);
+        var f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
+        f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
+        f.figure.GetComponent<GameFigure>().enemy = false;
 
         spawnAtCastle2 = randomSpawnOffset(spawnAtCastle2);
-        level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field.figure = player;
+        f = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field;
+        f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
+        f.figure.GetComponent<GameFigure>().enemy = true;
     }
 
     private Vector2 randomSpawnOffset(Vector2 position)

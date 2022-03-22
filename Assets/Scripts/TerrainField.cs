@@ -1,27 +1,24 @@
-using System;
-using System.Linq;
 using UnityEngine;
 
 public class TerrainField : MonoBehaviour
 {
-    public String type;
+    public TerrainType type;
     public LevelGeneration level;
     public GameObject figure;
     public int x;
     public int y;
     public float speed = 100f;
-    
+
     private Color[][] _startColors;
 
     void Start()
     {
         if (figure != null)
         {
-            figure = Instantiate(figure, new Vector3(x * level.size.x, 0, y * level.size.z), Quaternion.Euler(0, 0 , 0));
             figure.transform.parent = transform;
         }
     }
-    
+
     private void Update()
     {
         if (figure != null)
@@ -33,6 +30,10 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (type == TerrainType.Castle)
+        {
+            return;
+        }
         var s = level.selected;
         if (s == this)
         {
@@ -44,37 +45,61 @@ public class TerrainField : MonoBehaviour
             if (s != null)
             {
                 s.UnselectField();
-                if (((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
-                     (s.y == y && (s.x - 1 == x || s.x + 1 == x))) &&
-                    s.figure != null)
+                if (s.figure != null)
                 {
-                    figure = s.figure;
-                    figure.transform.parent = transform;
-                    if (s.x < x)
+                    if (s.figure.GetComponent<GameFigure>().enemy)
                     {
-                        figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        if ((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
+                            (s.y == y && (s.x - 1 == x || s.x + 1 == x)))
+                        {
+                            figure = s.figure;
+                            figure.transform.parent = transform;
+                            if (s.x < x)
+                            {
+                                figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                            }
+                            else if (s.x > x)
+                            {
+                                figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+                            }
+                            else if (s.y < y)
+                            {
+                                figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+                            }
+                            else if (s.y > y)
+                            {
+                                figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+                            }
+
+                            s.figure = null;
+                        }
                     }
-                    else if (s.x > x)
-                    {
-                        figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    }
-                    else if (s.y < y)
-                    {
-                        figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    }
-                    else if (s.y > y)
-                    {
-                        figure.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    }
-                    s.figure = null;
                 }
             }
-            SelectField();
             level.selected = this;
+
+            if (figure != null && !figure.GetComponent<GameFigure>().enemy)
+            {
+                SelectSuccess();
+            }
+            else
+            {
+                SelectError();
+            }
         }
     }
 
-    private void SelectField()
+    private void SelectSuccess()
+    {
+        SelectField(Color.red);
+    }
+
+    private void SelectError()
+    {
+        SelectField(Color.yellow);
+    }
+
+    private void SelectField(Color color)
     {
         var children = GetComponentsInChildren<Renderer>();
         _startColors = new Color[children.Length][];
@@ -84,7 +109,7 @@ public class TerrainField : MonoBehaviour
             for (var j = 0; j < children[i].materials.Length; j++)
             {
                 _startColors[i][j] = children[i].materials[j].color;
-                children[i].materials[j].color = Color.yellow;
+                children[i].materials[j].color = color;
             }
         }
     }
@@ -100,4 +125,14 @@ public class TerrainField : MonoBehaviour
             }
         }
     }
+}
+
+public enum TerrainType
+{
+    Castle,
+    Desert,
+    Forest,
+    Grass,
+    Lake,
+    Mountain
 }
