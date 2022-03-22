@@ -7,7 +7,9 @@ public class TerrainField : MonoBehaviour
     public GameObject figure;
     public int x;
     public int y;
-    public float speed = 100f;
+
+    public static float speed = 100f;
+    public static int round = 1;
 
     private Color[][] _startColors;
 
@@ -30,62 +32,52 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (type == TerrainType.Castle)
-        {
-            return;
-        }
         var s = level.selected;
-        if (s == this)
-        {
-            UnselectField();
-            level.selected = null;
-        }
-        else
+        if (s == this || type == TerrainType.Castle)
         {
             if (s != null)
-            {
                 s.UnselectField();
-                if (s.figure != null)
-                {
-                    if (s.figure.GetComponent<GameFigure>().enemy)
-                    {
-                        if ((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
-                            (s.y == y && (s.x - 1 == x || s.x + 1 == x)))
-                        {
-                            figure = s.figure;
-                            figure.transform.parent = transform;
-                            if (s.x < x)
-                            {
-                                figure.transform.rotation = Quaternion.Euler(0, 90, 0);
-                            }
-                            else if (s.x > x)
-                            {
-                                figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                            }
-                            else if (s.y < y)
-                            {
-                                figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                            }
-                            else if (s.y > y)
-                            {
-                                figure.transform.rotation = Quaternion.Euler(0, 180, 0);
-                            }
+            level.selected = null;
+            return;
+        }
 
-                            s.figure = null;
-                        }
+        if (s != null)
+        {
+            s.UnselectField();
+            if (s.figure != null)
+            {
+                if (IsMovable(s))
+                {
+                    if ((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
+                        (s.y == y && (s.x - 1 == x || s.x + 1 == x)))
+                    {
+                        figure = s.figure;
+                        figure.transform.parent = transform;
+                        if (s.x < x)
+                            figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        else if (s.x > x)
+                            figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+                        else if (s.y < y)
+                            figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        else if (s.y > y)
+                            figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+                        s.figure = null;
+                        round++;
                     }
                 }
             }
-            level.selected = this;
+        }
 
-            if (figure != null && !figure.GetComponent<GameFigure>().enemy)
-            {
-                SelectSuccess();
-            }
-            else
-            {
-                SelectError();
-            }
+        level.selected = this;
+
+        if (figure != null && IsMovable(s))
+        {
+            SelectSuccess();
+        }
+        else
+        {
+            SelectError();
         }
     }
 
@@ -116,6 +108,7 @@ public class TerrainField : MonoBehaviour
 
     private void UnselectField()
     {
+        if (_startColors == null) return;
         var children = GetComponentsInChildren<Renderer>();
         for (var i = 0; i < children.Length; i++)
         {
@@ -124,6 +117,13 @@ public class TerrainField : MonoBehaviour
                 children[i].materials[j].color = _startColors[i][j];
             }
         }
+    }
+
+    private bool IsMovable(TerrainField f)
+    {
+        return f != null && f.figure != null &&
+               !((f.figure.GetComponent<GameFigure>().enemy && round % 2 != 0) ||
+                 (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
     }
 }
 

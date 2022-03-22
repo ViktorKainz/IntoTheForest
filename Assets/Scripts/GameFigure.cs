@@ -12,7 +12,7 @@ public class GameFigure : MonoBehaviour
         {
             for (var j = 0; j < children[i].materials.Length; j++)
             {
-                children[i].materials[j].color = enemy ? Color.green : Color.red;
+                children[i].materials[j].color = enemy ? Color.red : Color.green;
             }
         }
     }
