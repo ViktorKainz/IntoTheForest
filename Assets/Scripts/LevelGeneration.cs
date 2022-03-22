@@ -16,6 +16,7 @@ public class LevelGeneration : MonoBehaviour
 {
     private Field[,] level;
     private Terrains terrain;
+    
     public int levelSize;
     public float noiseScale = 1.1f;
     public float noiseSeed;
@@ -163,7 +164,7 @@ public class LevelGeneration : MonoBehaviour
         level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field.figure = player;
     }
 
-    private Vector2 randomSpawnOffset(Vector2 position)
+    public Vector2 randomSpawnOffset(Vector2 position)
     {
         foreach (int option in Enumerable.Range(0, 4).OrderBy(x => Random.Range(0, 4)))
         {
@@ -190,5 +191,10 @@ public class LevelGeneration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public Field[,] getLevel()
+    {
+        return level;
     }
 }

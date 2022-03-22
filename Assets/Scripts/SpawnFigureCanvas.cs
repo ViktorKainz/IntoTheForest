@@ -10,6 +10,10 @@ namespace DefaultNamespace
         public Button knightBt;
         public Button pawnBt;
 
+        public GameObject queenPrefab;
+        public GameObject knightPrefab;
+        public GameObject pawnPrefab;
+
         public GameObject castle;
         
         // Start is called before the first frame update
@@ -17,12 +21,22 @@ namespace DefaultNamespace
         {
             gameObject.SetActive(false);
             closeBt.onClick.AddListener(() => gameObject.SetActive(false));
+            queenBt.onClick.AddListener(() => spawnRandomAroundCastle(queenPrefab));
         }
 
         // Update is called once per frame
         void Update()
         {
             
+        }
+
+        void spawnRandomAroundCastle(GameObject spawnFigure)
+        {
+            Vector2 castlePosition =
+                new Vector2(castle.GetComponent<TerrainField>().x, castle.GetComponent<TerrainField>().y);
+                Field[,] level = castle.GetComponent<TerrainField>().level.getLevel();
+                
+           
         }
         
     }
