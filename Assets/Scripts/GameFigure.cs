@@ -4,10 +4,17 @@ public class GameFigure : MonoBehaviour
 {
     public bool enemy;
     public FigureType type;
-    
+
     void Start()
     {
-        
+        var children = GetComponentsInChildren<Renderer>();
+        for (var i = 0; i < children.Length; i++)
+        {
+            for (var j = 0; j < children[i].materials.Length; j++)
+            {
+                children[i].materials[j].color = enemy ? Color.green : Color.red;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -19,5 +26,6 @@ public class GameFigure : MonoBehaviour
 
 public enum FigureType
 {
-    King, Pawn
+    King,
+    Pawn
 }

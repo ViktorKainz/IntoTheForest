@@ -108,8 +108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490d3ed3a57a5b846af79844c4e1b931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: Grass
+  type: 3
   level: {fileID: 0}
   figure: {fileID: 0}
   x: 0
   y: 0
+  speed: 100
