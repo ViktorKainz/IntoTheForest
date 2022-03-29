@@ -7,24 +7,47 @@ public class TerrainField : MonoBehaviour
     public GameObject figure;
     public int x;
     public int y;
-    public float speed = 100f;
+    public static float speed = 600f;
 
     private Color[][] _startColors;
 
+    private Animator animator;
+
+
     void Start()
     {
+ 
         if (figure != null)
         {
-            figure.transform.parent = transform;
+            
         }
     }
 
     private void Update()
     {
+        if(figure != null)
+        {
+            figure.transform.parent = transform;
+            // Animation
+
+                GameObject child = figure.transform.GetChild(0).gameObject;
+                animator = child.GetComponent<Animator>();
+
+            
+            if (figure.transform.position != new Vector3(x * level.size.x, 0, y * level.size.z))
+            {
+               
+                animator.SetBool("Walk", true);
+            }else
+            { 
+                if(animator != null)
+                animator.SetBool("Walk", false);
+            }
+        }
         if (figure != null)
         {
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
-                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * 1000);
+                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
         }
     }
 

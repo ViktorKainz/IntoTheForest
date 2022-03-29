@@ -91,7 +91,7 @@ Transform:
   m_Children:
   - {fileID: 1261370992937652847}
   m_Father: {fileID: 7357449260215994602}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &504378824479732294
 GameObject:
@@ -586,6 +586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fef03db9a08fc41a9ff486cf84dba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: 0
+  type: 0
 --- !u!1 &2816552896396065005
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,7 +801,7 @@ Transform:
   m_Children:
   - {fileID: 8738597176278021150}
   m_Father: {fileID: 7357449260215994602}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3731297417096065737
 GameObject:
@@ -1271,7 +1273,7 @@ Animator:
   m_GameObject: {fileID: 8257093461767099220}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 896343129e455844e9b2228570491ff6, type: 2}
+  m_Controller: {fileID: 9100000, guid: a58335163f6f8534f95502451eecfe8e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1373,7 +1375,7 @@ Transform:
   m_Children:
   - {fileID: 2020344479065883189}
   m_Father: {fileID: 7357449260215994602}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8404126907524855242
 GameObject:
@@ -1402,6 +1404,7 @@ Transform:
   m_LocalPosition: {x: 2.0027383e-14, y: 0.92949456, z: 9.313226e-10}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_Children:
+  - {fileID: 951782497001314896}
   - {fileID: 7978823598387838995}
   - {fileID: 5963265122917010694}
   - {fileID: 2190846304456832883}
@@ -1532,3 +1535,77 @@ Transform:
   m_Father: {fileID: 7978823598387838995}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &774566763538939323
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7357449260215994602}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 99.999954
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 99.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.784
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.459
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.254
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.4601247
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.47811177
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5476051
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.50972843
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+      propertyPath: m_Name
+      value: Low Poly Weapon Pack - by Kickin It Studios.fbx_Arming_Sword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+--- !u!4 &951782497001314896 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 577cd13afe721a34bb2257f7c191cb53, type: 3}
+  m_PrefabInstance: {fileID: 774566763538939323}
+  m_PrefabAsset: {fileID: 0}
