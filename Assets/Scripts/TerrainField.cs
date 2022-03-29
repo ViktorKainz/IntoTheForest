@@ -23,7 +23,7 @@ public class TerrainField : MonoBehaviour
     {
         if (figure != null)
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
-                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * 1000);
+                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
     }
 
     private void OnMouseUp()

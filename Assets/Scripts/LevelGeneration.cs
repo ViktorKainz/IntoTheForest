@@ -68,6 +68,7 @@ public class LevelGeneration : MonoBehaviour
             else i--;
         }
 
+        var board = new GameObject(name: "Board");
         foreach (int z in Enumerable.Range(0, levelSize))
         {
             foreach (int x in Enumerable.Range(0, levelSize))
@@ -106,10 +107,12 @@ public class LevelGeneration : MonoBehaviour
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z),
                     level[x, z].plan.transform.rotation);
                 level[x, z].obj.transform.rotation = level[x, z].rotation;
+                level[x, z].obj.transform.parent = board.transform;
                 level[x, z].field = level[x, z].obj.GetComponent<TerrainField>();
                 level[x, z].field.x = x;
                 level[x, z].field.y = z;
                 level[x, z].field.level = this;
+                level[x, z].obj.name = x + " " + z + " " + level[x, z].field.type;
             }
         }
 
@@ -158,7 +161,7 @@ public class LevelGeneration : MonoBehaviour
 
     private Vector2 randomSpawnOffset(Vector2 position)
     {
-        foreach (int option in Enumerable.Range(0, 4).OrderBy(x => Random.Range(0, 4)))
+        foreach (int option in Enumerable.Range(0, 8).OrderBy(x => Random.Range(0, 8)))
         {
             switch (option)
             {
@@ -174,9 +177,20 @@ public class LevelGeneration : MonoBehaviour
                 case 3:
                     if (position.y < levelSize - 1) return new Vector2(position.x, position.y + 1);
                     continue;
+                case 4:
+                    if (position.x > 0 && position.y > 0) return new Vector2(position.x - 1, position.y - 1);
+                    continue;
+                case 5:
+                    if(position.x < levelSize - 1 && position.y > 0) return new Vector2(position.x + 1, position.y - 1);
+                    continue;
+                case 6:
+                    if (position.x > 0 && position.y < levelSize - 1) return new Vector2(position.x - 1, position.y + 1);
+                    continue;
+                case 7:
+                    if (position.x < levelSize - 1 && position.y < levelSize - 1) return new Vector2(position.x + 1, position.y + 1);
+                    continue;
             }
         }
-
         return position;
     }
 }
