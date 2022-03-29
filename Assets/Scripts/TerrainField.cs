@@ -1,80 +1,89 @@
-using System;
-using System.Linq;
 using UnityEngine;
 
 public class TerrainField : MonoBehaviour
 {
-    public String type;
+    public TerrainType type;
     public LevelGeneration level;
     public GameObject figure;
     public int x;
     public int y;
-    public float speed = 100f;
-    
+
+    public static float speed = 100f;
+    public static int round = 1;
+
     private Color[][] _startColors;
 
     void Start()
     {
         if (figure != null)
-        {
-            figure = Instantiate(figure, new Vector3(x * level.size.x, 0, y * level.size.z), Quaternion.Euler(0, 0 , 0));
             figure.transform.parent = transform;
-        }
     }
-    
+
     private void Update()
     {
         if (figure != null)
-        {
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
-                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * 1000);
-        }
+                new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
     }
 
     private void OnMouseUp()
     {
-        var s = level.selected;
-        if (s == this)
+        var selected = level.selected;
+        if (selected == this || type == TerrainType.Castle)
         {
-            UnselectField();
+            if (selected != null)
+                selected.UnselectField();
             level.selected = null;
+            return;
         }
-        else
+
+        if (selected != null)
         {
-            if (s != null)
+            selected.UnselectField();
+            if (selected.figure != null)
             {
-                s.UnselectField();
-                if (((s.x == x && (s.y - 1 == y || s.y + 1 == y)) ||
-                     (s.y == y && (s.x - 1 == x || s.x + 1 == x))) &&
-                    s.figure != null)
+                if (IsMovable(selected))
                 {
-                    figure = s.figure;
-                    figure.transform.parent = transform;
-                    if (s.x < x)
+                    if ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
+                        (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x)))
                     {
-                        figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        figure = selected.figure;
+                        figure.transform.parent = transform;
+                        if (selected.x < x)
+                            figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        else if (selected.x > x)
+                            figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+                        else if (selected.y < y)
+                            figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        else if (selected.y > y)
+                            figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+                        selected.figure = null;
+                        round++;
                     }
-                    else if (s.x > x)
-                    {
-                        figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    }
-                    else if (s.y < y)
-                    {
-                        figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    }
-                    else if (s.y > y)
-                    {
-                        figure.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    }
-                    s.figure = null;
                 }
             }
-            SelectField();
-            level.selected = this;
         }
+
+        level.selected = this;
+
+        if (figure != null && IsMovable(selected))
+            SelectSuccess();
+        else
+            SelectError();
     }
 
-    private void SelectField()
+    private void SelectSuccess()
+    {
+        SelectField(Color.red);
+    }
+
+    private void SelectError()
+    {
+        SelectField(Color.yellow);
+    }
+
+    private void SelectField(Color color)
     {
         var children = GetComponentsInChildren<Renderer>();
         _startColors = new Color[children.Length][];
@@ -84,20 +93,34 @@ public class TerrainField : MonoBehaviour
             for (var j = 0; j < children[i].materials.Length; j++)
             {
                 _startColors[i][j] = children[i].materials[j].color;
-                children[i].materials[j].color = Color.yellow;
+                children[i].materials[j].color = color;
             }
         }
     }
 
     private void UnselectField()
     {
+        if (_startColors == null) return;
         var children = GetComponentsInChildren<Renderer>();
         for (var i = 0; i < children.Length; i++)
-        {
-            for (var j = 0; j < children[i].materials.Length; j++)
-            {
-                children[i].materials[j].color = _startColors[i][j];
-            }
-        }
+        for (var j = 0; j < children[i].materials.Length; j++)
+            children[i].materials[j].color = _startColors[i][j];
     }
+
+    private bool IsMovable(TerrainField f)
+    {
+        return f != null && f.figure != null &&
+               !((f.figure.GetComponent<GameFigure>().enemy && round % 2 != 0) ||
+                 (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
+    }
+}
+
+public enum TerrainType
+{
+    Castle,
+    Desert,
+    Forest,
+    Grass,
+    Lake,
+    Mountain
 }
