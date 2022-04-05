@@ -30,7 +30,7 @@ public class TerrainField : MonoBehaviour
     {
         var selected = level.selected;
         //Deactivate FigureCanvas from every castle
-        if (level.selected == null)
+        if (selected == null)
         {
             Field[,] lvl = level.getLevel();
             foreach (Field field in lvl)

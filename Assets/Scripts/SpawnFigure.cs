@@ -11,6 +11,7 @@ public class SpawnFigure : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("canvas");
         canvas = Instantiate(canvas);
         canvas.GetComponent<SpawnFigureCanvas>().castle = gameObject;
     }
