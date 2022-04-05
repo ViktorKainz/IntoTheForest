@@ -12,7 +12,7 @@ public class CameraMovement : MonoBehaviour
     {
         var center = new Vector3(levelSize / 2f * componentSize, 900, levelSize / 2f * componentSize);
         transform.position = center;
-        transform.rotation = Quaternion.Euler (60, 0, 0);
+        transform.rotation = Quaternion.Euler(60, 0, 0);
         center.y = 0;
         bounds = new Bounds(center, center * 2.5f);
     }
@@ -28,43 +28,28 @@ public class CameraMovement : MonoBehaviour
         var c = Camera.main;
         var scale = c.orthographicSize;
         var fov = c.fieldOfView;
-        
+
         fov -= Input.GetAxis("Mouse ScrollWheel") * sensitivity;
         fov = Mathf.Clamp(fov, minFov, maxFov);
 
         if (Input.GetMouseButton(0))
-        {
             pos += rotation * new Vector3(-Input.GetAxis("Mouse X") * dragSpeed * scale, 0,
                 -Input.GetAxis("Mouse Y") * dragSpeed * scale);
-        }
         if (Input.GetMouseButton(1))
-        {
             angles.y += Input.GetAxis("Mouse X") * dragSpeed;
-        }
+        
         if (Input.GetKey(KeyCode.A))
-        {
             pos += rotation * new Vector3(-fov * Time.deltaTime * dragSpeed * 2, 0, 0);
-        }
         if (Input.GetKey(KeyCode.D))
-        {
             pos += rotation * new Vector3(fov * Time.deltaTime * dragSpeed * 2, 0, 0);
-        }
         if (Input.GetKey(KeyCode.S))
-        {
             pos += rotation * new Vector3(0, 0, -fov * Time.deltaTime * dragSpeed * 2);
-        }
         if (Input.GetKey(KeyCode.W))
-        {
             pos += rotation * new Vector3(0, 0, fov * Time.deltaTime * dragSpeed * 2);
-        }   
         if (Input.GetKey(KeyCode.Q))
-        {
-            angles.y -= fov/50;
-        }
+            angles.y -= fov / 50;
         if (Input.GetKey(KeyCode.E))
-        {
-            angles.y += fov/50;
-        }
+            angles.y += fov / 50;
         if (Input.GetKey(KeyCode.C))
         {
             angles.y = 0;
@@ -72,10 +57,9 @@ public class CameraMovement : MonoBehaviour
             pos.y = 900;
             fov = 60;
         }
-        if (bounds.Contains(pos+new Vector3(0,-pos.y,0)))
-        {
+
+        if (bounds.Contains(pos + new Vector3(0, -pos.y, 0)))
             transform.position = pos;
-        }
         transform.eulerAngles = angles;
         Camera.main.fieldOfView = fov;
     }

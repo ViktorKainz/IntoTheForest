@@ -25,7 +25,6 @@ public class LevelGeneration : MonoBehaviour
     public GameObject player;
     public TerrainField selected;
 
-    // Start is called before the first frame update
     void Start()
     {
         terrain = gameObject.GetComponent<Terrains>();
@@ -38,9 +37,7 @@ public class LevelGeneration : MonoBehaviour
     {
         level = new Field[levelSize, levelSize];
         if (noiseSeed == 0)
-        {
             noiseSeed = Random.value * noiseScale;
-        }
 
         List<Vector2> castleCoord = new List<Vector2>();
         int minDist = levelSize / numberCastles + levelSize / 10;
@@ -57,9 +54,7 @@ public class LevelGeneration : MonoBehaviour
                     float difX = Math.Abs(coords.x - x);
                     float difY = Math.Abs(coords.y - z);
                     if (difX < minDist && difY < minDist)
-                    {
                         insert = false;
-                    }
                 }
 
                 if (insert)
@@ -69,17 +64,12 @@ public class LevelGeneration : MonoBehaviour
                     Vector2 castleLoc = new Vector2(x, z);
                     castleCoord.Add(castleLoc);
                 }
-                else
-                {
-                    i--;
-                }
+                else i--;
             }
-            else
-            {
-                i--;
-            }
+            else i--;
         }
 
+        var board = new GameObject(name: "Board");
         foreach (int z in Enumerable.Range(0, levelSize))
         {
             foreach (int x in Enumerable.Range(0, levelSize))
@@ -118,10 +108,12 @@ public class LevelGeneration : MonoBehaviour
                 level[x, z].obj = Instantiate(level[x, z].plan, new Vector3(x * size.x, 0, z * size.z),
                     level[x, z].plan.transform.rotation);
                 level[x, z].obj.transform.rotation = level[x, z].rotation;
+                level[x, z].obj.transform.parent = board.transform;
                 level[x, z].field = level[x, z].obj.GetComponent<TerrainField>();
                 level[x, z].field.x = x;
                 level[x, z].field.y = z;
                 level[x, z].field.level = this;
+                level[x, z].obj.name = x + " " + z + " " + level[x, z].field.type;
             }
         }
 
@@ -154,7 +146,7 @@ public class LevelGeneration : MonoBehaviour
             level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.green;
 
-        castleFlag = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
+        castleFlag = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
 
         spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1, levelSize);
@@ -170,7 +162,7 @@ public class LevelGeneration : MonoBehaviour
 
     public static Vector2 randomSpawnOffset(Vector2 position, int levelSize)
     {
-        foreach (int option in Enumerable.Range(0, 4).OrderBy(x => Random.Range(0, 4)))
+        foreach (int option in Enumerable.Range(0, 8).OrderBy(x => Random.Range(0, 8)))
         {
             switch (option)
             {
@@ -186,9 +178,20 @@ public class LevelGeneration : MonoBehaviour
                 case 3:
                     if (position.y < levelSize - 1) return new Vector2(position.x, position.y + 1);
                     continue;
+                case 4:
+                    if (position.x > 0 && position.y > 0) return new Vector2(position.x - 1, position.y - 1);
+                    continue;
+                case 5:
+                    if(position.x < levelSize - 1 && position.y > 0) return new Vector2(position.x + 1, position.y - 1);
+                    continue;
+                case 6:
+                    if (position.x > 0 && position.y < levelSize - 1) return new Vector2(position.x - 1, position.y + 1);
+                    continue;
+                case 7:
+                    if (position.x < levelSize - 1 && position.y < levelSize - 1) return new Vector2(position.x + 1, position.y + 1);
+                    continue;
             }
         }
-
         return position;
     }
 
