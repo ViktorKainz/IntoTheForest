@@ -260,8 +260,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 200, y: 200, z: 200}
-  m_Center: {x: 0, y: 100, z: 0}
+  m_Size: {x: 200, y: 132.4079, z: 200}
+  m_Center: {x: 0, y: 66.20395, z: 0}
 --- !u!114 &5366526852784693206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490d3ed3a57a5b846af79844c4e1b931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: Castel
+  type: 0
   level: {fileID: 0}
   figure: {fileID: 0}
   x: 0
