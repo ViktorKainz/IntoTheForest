@@ -148,49 +148,63 @@ public class LevelGeneration : MonoBehaviour
         castleFlag = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
 
-        spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1);
+        spawnAtCastle1 = RandomSpawnOffset(spawnAtCastle1);
         var f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
         f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
         f.figure.GetComponent<GameFigure>().enemy = false;
 
-        spawnAtCastle2 = randomSpawnOffset(spawnAtCastle2);
+        spawnAtCastle2 = RandomSpawnOffset(spawnAtCastle2);
         f = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field;
         f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
         f.figure.GetComponent<GameFigure>().enemy = true;
     }
 
-    private Vector2 randomSpawnOffset(Vector2 position)
+    private Vector2 RandomSpawnOffset(Vector2 position)
     {
+        var newP = new Vector2();
         foreach (int option in Enumerable.Range(0, 8).OrderBy(x => Random.Range(0, 8)))
         {
             switch (option)
             {
                 case 0:
-                    if (position.x > 0) return new Vector2(position.x - 1, position.y);
+                    newP = new Vector2(position.x - 1, position.y);
+                    if (position.x > 0 && IsFieldEmpty(newP)) return newP;
                     continue;
                 case 1:
-                    if (position.y > 0) return new Vector2(position.x, position.y - 1);
-                    continue;
+                    newP = new Vector2(position.x, position.y - 1);
+                    if (position.y > 0 && IsFieldEmpty(newP)) return newP;
+                    continue;   
                 case 2:
-                    if (position.x < levelSize - 1) return new Vector2(position.x + 1, position.y);
+                    newP = new Vector2(position.x + 1, position.y);
+                    if (position.x < levelSize - 1 && IsFieldEmpty(newP)) return newP;
                     continue;
                 case 3:
-                    if (position.y < levelSize - 1) return new Vector2(position.x, position.y + 1);
+                    newP = new Vector2(position.x, position.y + 1);
+                    if (position.y < levelSize - 1 && IsFieldEmpty(newP)) return newP;
                     continue;
                 case 4:
-                    if (position.x > 0 && position.y > 0) return new Vector2(position.x - 1, position.y - 1);
+                    newP = new Vector2(position.x - 1, position.y - 1);
+                    if (position.x > 0 && position.y > 0 && IsFieldEmpty(newP)) return newP;
                     continue;
                 case 5:
-                    if(position.x < levelSize - 1 && position.y > 0) return new Vector2(position.x + 1, position.y - 1);
+                    newP = new Vector2(position.x + 1, position.y - 1);
+                    if(position.x < levelSize - 1 && position.y > 0 && IsFieldEmpty(newP)) return newP;
                     continue;
                 case 6:
-                    if (position.x > 0 && position.y < levelSize - 1) return new Vector2(position.x - 1, position.y + 1);
+                    newP = new Vector2(position.x - 1, position.y + 1);
+                    if (position.x > 0 && position.y < levelSize - 1 && IsFieldEmpty(newP)) return newP;
                     continue;
                 case 7:
-                    if (position.x < levelSize - 1 && position.y < levelSize - 1) return new Vector2(position.x + 1, position.y + 1);
+                    newP = new Vector2(position.x + 1, position.y + 1);
+                    if (position.x < levelSize - 1 && position.y < levelSize - 1 && IsFieldEmpty(newP)) return newP;
                     continue;
             }
         }
-        return position;
+        return new Vector2(-1, -1);
+    }
+
+    private bool IsFieldEmpty(Vector2 position)
+    {
+        return level[(int) position.x, (int) position.y].field.figure == null;
     }
 }
