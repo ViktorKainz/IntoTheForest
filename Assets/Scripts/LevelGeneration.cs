@@ -159,7 +159,7 @@ public class LevelGeneration : MonoBehaviour
         f.figure.GetComponent<GameFigure>().enemy = true;
     }
 
-    private Vector2 RandomSpawnOffset(Vector2 position)
+    public Vector2 RandomSpawnOffset(Vector2 position)
     {
         var newP = new Vector2();
         foreach (int option in Enumerable.Range(0, 8).OrderBy(x => Random.Range(0, 8)))
@@ -203,8 +203,13 @@ public class LevelGeneration : MonoBehaviour
         return new Vector2(-1, -1);
     }
 
-    private bool IsFieldEmpty(Vector2 position)
+    public bool IsFieldEmpty(Vector2 position)
     {
         return level[(int) position.x, (int) position.y].field.figure == null;
+    }
+    
+    public bool IsFieldEnemy(Vector2 position)
+    {
+        return level[(int) position.x, (int) position.y].field.figure.GetComponent<GameFigure>().enemy;
     }
 }

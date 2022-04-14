@@ -10,7 +10,7 @@ public class TerrainField : MonoBehaviour
     public int y;
 
     public static float speed = 100f;
-    public static int round = 1;
+    public static int round = 1;        //odd number player green even player red
 
     private Color[][] _startColors;
 
@@ -41,49 +41,61 @@ public class TerrainField : MonoBehaviour
         if (selected != null)
         {
             selected.UnselectField();
-            if (selected.figure != null)
+            if (selected.figure != null && IsMovable(selected) &&
+                ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
+                 (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x))))
             {
-                if (IsMovable(selected))
+                var pos = new Vector2(x, y);
+                // Move to empty field
+                Debug.Log(level.IsFieldEmpty(pos));
+                if (level.IsFieldEmpty(pos))
                 {
-                    if ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
-                        (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x)))
-                    {
-                        figure = selected.figure;
-                        figure.transform.parent = transform;
-                        if (selected.x < x)
-                            figure.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        else if (selected.x > x)
-                            figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        else if (selected.y < y)
-                            figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        else if (selected.y > y)
-                            figure.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-                        selected.figure = null;
-                        round++;
-                        Debug.Log(GameObject.FindWithTag("PlayerText"));
-                        Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
-                        if (round % 2 == 0)
-                        {
-                            t.color = Color.red;
-                            t.text = "Player red";
-                        }
-                        else
-                        {
-                            t.color = Color.green;
-                            t.text = "Player green";
-                        }
-                    }
+                    figure = selected.figure;
+                    figure.transform.parent = transform;
+                    if (selected.x < x)
+                        figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    else if (selected.x > x)
+                        figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+                    else if (selected.y < y)
+                        figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    else if (selected.y > y)
+                        figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    selected.figure = null;
+                    nextRound();
+                }
+                // Attack enemy field
+                else if((round%2 != 0  && level.IsFieldEnemy(pos)) || (round%2 == 0 && !level.IsFieldEmpty(pos)))
+                {
+                    Debug.Log("Attack");
+                }
+                // Can not move to ally field
+                else
+                {
+                    Debug.Log("Ally");
                 }
             }
         }
-
         level.selected = this;
-
         if (figure != null && IsMovable(selected))
             SelectSuccess();
         else
             SelectError();
+    }
+
+    private void nextRound()
+    {
+        round++;
+        Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
+        if (round % 2 == 0)
+        {
+            t.color = Color.red;
+            t.text = "Player red";
+        }
+        else
+        {
+            t.color = Color.green;
+            t.text = "Player green";
+        }
     }
 
     private void SelectSuccess()
