@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TerrainField : MonoBehaviour
 {
@@ -60,6 +61,18 @@ public class TerrainField : MonoBehaviour
 
                         selected.figure = null;
                         round++;
+                        Debug.Log(GameObject.FindWithTag("PlayerText"));
+                        Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
+                        if (round % 2 == 0)
+                        {
+                            t.color = Color.red;
+                            t.text = "Player red";
+                        }
+                        else
+                        {
+                            t.color = Color.green;
+                            t.text = "Player green";
+                        }
                     }
                 }
             }
