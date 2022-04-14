@@ -151,7 +151,7 @@ public class LevelGeneration : MonoBehaviour
 
         castleFlag = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
-        level[(int) spawnAtCastle2.x, (int) spawnAtCastle1.y].obj.GetComponent<SpawnFigure>().setTeam(Team.Red);
+        level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.GetComponent<SpawnFigure>().setTeam(Team.Red);
 
         spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1, level);
         TerrainField f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
@@ -210,7 +210,14 @@ public class LevelGeneration : MonoBehaviour
 
     private static bool IsFieldEmpty(Vector2 position, Field[,] level)
     {
-        return level[(int) position.x, (int) position.y].field.figure == null;
+        try
+        {
+            return level[(int)position.x, (int)position.y].field.figure == null;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            return false;
+        }
     }
     public Field[,] getLevel()
     {

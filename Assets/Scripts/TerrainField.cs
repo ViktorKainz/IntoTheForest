@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TerrainField : MonoBehaviour
 {
@@ -39,8 +40,9 @@ public class TerrainField : MonoBehaviour
                 {
                     field.obj.GetComponent<SpawnFigure>().setInactive();
                 }
-            }   
+            }
         }
+
         if (selected == this || type == TerrainType.Castle)
         {
             if (selected != null)
