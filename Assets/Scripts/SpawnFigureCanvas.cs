@@ -40,7 +40,7 @@ namespace DefaultNamespace
                 new Vector2(castle.GetComponent<TerrainField>().x, castle.GetComponent<TerrainField>().y);
                 Field[,] level = castle.GetComponent<TerrainField>().level.getLevel();
                 
-                var spawnPos = LevelGeneration.randomSpawnOffset(castlePosition, level.Length);
+                var spawnPos = LevelGeneration.randomSpawnOffset(castlePosition, level);
                 if (!spawnPos.Equals(new Vector2(-1, -1)))
                 {
                     TerrainField f = level[(int) spawnPos.x, (int) spawnPos.y].field;
