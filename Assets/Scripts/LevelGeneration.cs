@@ -130,6 +130,8 @@ public class LevelGeneration : MonoBehaviour
             GameObject flag =
                 level[(int) castle1.x, (int) castle1.y].obj.transform.Find("Flag").gameObject;
             flag.GetComponent<Renderer>().material.color = Color.white;
+            level[(int) castle1.x, (int) castle1.y].obj.GetComponent<SpawnFigure>().setTeam(Team.White);
+
             foreach (Vector2 castle2 in castleLoc)
             {
                 float currentDistance = Vector2.Distance(castle1, castle2);
@@ -145,9 +147,11 @@ public class LevelGeneration : MonoBehaviour
         GameObject castleFlag =
             level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.green;
+        level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.GetComponent<SpawnFigure>().setTeam(Team.Green);
 
         castleFlag = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
+        level[(int) spawnAtCastle2.x, (int) spawnAtCastle1.y].obj.GetComponent<SpawnFigure>().setTeam(Team.Red);
 
         spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1, level);
         TerrainField f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
