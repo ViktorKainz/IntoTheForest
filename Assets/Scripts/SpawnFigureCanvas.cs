@@ -1,5 +1,7 @@
+using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
+using static TerrainField;
 
 namespace DefaultNamespace
 {
@@ -21,11 +23,11 @@ namespace DefaultNamespace
         // Start is called before the first frame update
         void Start()
         {
-            gameObject.SetActive(false);
             closeBt.onClick.AddListener(() => gameObject.SetActive(false));
             queenBt.onClick.AddListener(() => spawnRandomAroundCastle(queenPrefab));
             knightBt.onClick.AddListener(() => spawnRandomAroundCastle(knightPrefab));
             pawnBt.onClick.AddListener(() => spawnRandomAroundCastle(pawnPrefab));
+            gameObject.SetActive(false);
         }
 
         // Update is called once per frame
@@ -44,8 +46,8 @@ namespace DefaultNamespace
                 if (!spawnPos.Equals(new Vector2(-1, -1)))
                 {
                     TerrainField f = level[(int) spawnPos.x, (int) spawnPos.y].field;
+                    spawnFigure.GetComponent<GameFigure>().enemy = round % 2 == 0;
                     f.figure = Instantiate(spawnFigure, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
-                    f.figure.GetComponent<GameFigure>().enemy = false;
                 }
         }
     }

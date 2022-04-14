@@ -29,63 +29,67 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
-        var selected = level.selected;
-        //Deactivate FigureCanvas from every castle
-        if (selected == null)
+        if (EventSystem.current.IsPointerOverGameObject())
         {
-            Field[,] lvl = level.getLevel();
-            foreach (Field field in lvl)
+            var selected = level.selected;
+            //Deactivate FigureCanvas from every castle
+            if (selected == null)
             {
-                if (field.plan == level.getTerrain().castle)
+                Field[,] lvl = level.getLevel();
+                foreach (Field field in lvl)
                 {
-                    field.obj.GetComponent<SpawnFigure>().setInactive();
-                }
-            }
-        }
-
-        if (selected == this || type == TerrainType.Castle)
-        {
-            if (selected != null)
-                selected.UnselectField();
-            level.selected = null;
-            return;
-        }
-
-        if (selected != null)
-        {
-            selected.UnselectField();
-            if (selected.figure != null)
-            {
-                if (IsMovable(selected))
-                {
-                    if ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
-                        (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x)))
+                    if (field.plan == level.getTerrain().castle)
                     {
-                        figure = selected.figure;
-                        figure.transform.parent = transform;
-                        if (selected.x < x)
-                            figure.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        else if (selected.x > x)
-                            figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        else if (selected.y < y)
-                            figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        else if (selected.y > y)
-                            figure.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-                        selected.figure = null;
-                        round++;
+                        field.obj.GetComponent<SpawnFigure>().setInactive();
                     }
                 }
             }
+
+            if (selected == this || type == TerrainType.Castle)
+            {
+                if (selected != null)
+                    selected.UnselectField();
+                level.selected = null;
+                return;
+            }
+
+            if (selected != null)
+            {
+                selected.UnselectField();
+                if (selected.figure != null)
+                {
+                    if (IsMovable(selected))
+                    {
+                        if ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
+                            (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x)))
+                        {
+                            figure = selected.figure;
+                            figure.transform.parent = transform;
+                            if (selected.x < x)
+                                figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+                            else if (selected.x > x)
+                                figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+                            else if (selected.y < y)
+                                figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+                            else if (selected.y > y)
+                                figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+                            selected.figure = null;
+                            round++;
+                        }
+                    }
+                }
+            }
+
+            level.selected = this;
+
+            if (figure != null && IsMovable(selected))
+                SelectSuccess();
+            else
+                SelectError();
         }
-
-        level.selected = this;
-
-        if (figure != null && IsMovable(selected))
-            SelectSuccess();
-        else
-            SelectError();
     }
+
 
     private void SelectSuccess()
     {
