@@ -47,26 +47,19 @@ public class TerrainField : MonoBehaviour
             {
                 var pos = new Vector2(x, y);
                 // Move to empty field
-                Debug.Log(level.IsFieldEmpty(pos));
                 if (level.IsFieldEmpty(pos))
                 {
-                    figure = selected.figure;
-                    figure.transform.parent = transform;
-                    if (selected.x < x)
-                        figure.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    else if (selected.x > x)
-                        figure.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    else if (selected.y < y)
-                        figure.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    else if (selected.y > y)
-                        figure.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    selected.figure = null;
-                    nextRound();
+                    Debug.Log("Move");
+                    MoveFigure(selected);
+                    NextRound();
                 }
                 // Attack enemy field
                 else if((round%2 != 0  && level.IsFieldEnemy(pos)) || (round%2 == 0 && !level.IsFieldEmpty(pos)))
                 {
                     Debug.Log("Attack");
+                    figure.GetComponent<GameFigure>().Kill();
+                    MoveFigure(selected);
+                    NextRound();
                 }
                 // Can not move to ally field
                 else
@@ -82,7 +75,22 @@ public class TerrainField : MonoBehaviour
             SelectError();
     }
 
-    private void nextRound()
+    private void MoveFigure(TerrainField field)
+    {
+        figure = field.figure;
+        figure.transform.parent = transform;
+        if (field.x < x)
+            figure.transform.rotation = Quaternion.Euler(0, 90, 0);
+        else if (field.x > x)
+            figure.transform.rotation = Quaternion.Euler(0, 270, 0);
+        else if (field.y < y)
+            figure.transform.rotation = Quaternion.Euler(0, 0, 0);
+        else if (field.y > y)
+            figure.transform.rotation = Quaternion.Euler(0, 180, 0);
+        field.figure = null;
+    }
+
+    private void NextRound()
     {
         round++;
         Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();

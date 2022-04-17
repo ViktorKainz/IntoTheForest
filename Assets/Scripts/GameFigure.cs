@@ -16,6 +16,19 @@ public class GameFigure : MonoBehaviour
             }
         }
     }
+
+    public void Kill()
+    {
+        var children = GetComponentsInChildren<Renderer>();
+        for (var i = 0; i < children.Length; i++)
+        {
+            children[i].enabled = false;
+        }
+        var t = transform;
+        var pos = t.position;
+        pos.y = -1000;
+        t.position = pos;
+    } 
 }
 
 public enum FigureType
