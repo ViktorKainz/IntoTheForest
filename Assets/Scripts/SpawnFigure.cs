@@ -36,7 +36,7 @@ public class SpawnFigure : MonoBehaviour
         if ((round % 2 == 0 && team == Team.Red || 
              round % 2 == 1 && team == Team.Green))
         {
-            gameObject.GetComponent<TerrainField>().closeAllCastleMenus();
+            gameObject.GetComponent<TerrainField>().CloseAllCastleMenus();
             if (canvas.GetComponent<SpawnFigureCanvas>().allowSpawn)
             {
                 canvas.GetComponent<SpawnFigureCanvas>().roundError.SetActive(false);

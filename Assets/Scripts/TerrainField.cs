@@ -39,13 +39,13 @@ public class TerrainField : MonoBehaviour
 
     private void Update()
     {
-        movementAnimation();
+        MovementAnimation();
         if (figure != null)
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
                 new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
     }
 
-    private void movementAnimation()
+    private void MovementAnimation()
     {
         animator = selected?.animator;
         if (figure != null)
@@ -75,6 +75,7 @@ public class TerrainField : MonoBehaviour
         if (round == -1) return;
         if (EventSystem.current.IsPointerOverGameObject())
         {
+            ClearSelection();
             if (selected == this)
             {
                 if (selected != null)
@@ -82,8 +83,6 @@ public class TerrainField : MonoBehaviour
                 selected = null;
                 return;
             }
-
-            ClearSelection();
 
             if (selected != null && selected.figure != null && IsMovable(selected))
             {
@@ -112,8 +111,8 @@ public class TerrainField : MonoBehaviour
                     else if ((round % 2 != 0 && level.IsFieldEnemy(pos)) ||
                              (round % 2 == 0 && !LevelGeneration.IsFieldEmpty(pos, level.getLevel())))
                     {
-                        selected.animator.SetBool("Fight", true);
-                        StartCoroutine(waitAnimation());
+                        animator.SetBool("Fight", true);
+                        StartCoroutine(WaitAnimation());
                     }
                     // Can not move to ally field
                     else
@@ -147,11 +146,10 @@ public class TerrainField : MonoBehaviour
         }
     }
 
-    public IEnumerator waitAnimation()
+    public IEnumerator WaitAnimation()
     {
-
         yield return new WaitForSeconds(1.5f);
-       
+
         selected.animator.SetBool("Fight", false);
         figure.GetComponent<GameFigure>().Kill();
         MoveFigure(selected);
@@ -176,7 +174,7 @@ public class TerrainField : MonoBehaviour
     private void NextRound()
     {
         round++;
-        closeAllCastleMenus();
+        CloseAllCastleMenus();
         Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
         if (round == -1)
         {
@@ -193,8 +191,7 @@ public class TerrainField : MonoBehaviour
             SpawnFigureCanvas.pointsGreen += 1;
         }
 
-
-    updateCurrentPlayerInfo();
+        UpdateCurrentPlayerInfo();
     }
 
 
@@ -257,7 +254,7 @@ public class TerrainField : MonoBehaviour
                  (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
     }
 
-    public void closeAllCastleMenus()
+    public void CloseAllCastleMenus()
     {
         Field[,] lvl = level.getLevel();
         foreach (Field field in lvl)
@@ -284,7 +281,7 @@ public class TerrainField : MonoBehaviour
         moveSelected.Clear();
     }
 
-    public static void updateCurrentPlayerInfo()
+    public static void UpdateCurrentPlayerInfo()
     {
         Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
         if (round % 2 == 0)

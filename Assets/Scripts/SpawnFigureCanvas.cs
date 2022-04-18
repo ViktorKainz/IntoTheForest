@@ -63,7 +63,7 @@ namespace DefaultNamespace
                     return;
                 }
                 pointsGreen -= cost;
-                updateCurrentPlayerInfo();
+                UpdateCurrentPlayerInfo();
             }
             else
             {
@@ -73,7 +73,7 @@ namespace DefaultNamespace
                     return;
                 }
                 pointsRed -= cost;
-                updateCurrentPlayerInfo();
+                UpdateCurrentPlayerInfo();
             }
             
             if (allowSpawn)
