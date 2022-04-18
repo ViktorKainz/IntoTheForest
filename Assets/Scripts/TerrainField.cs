@@ -120,13 +120,13 @@ public class TerrainField : MonoBehaviour
         }
         if (round % 2 == 0)
         {
-            t.color = Color.red;
-            t.text = "Player red";
+            t.color = Color.green;
+            t.text = "Player green";
         }
         else
         {
-            t.color = Color.green;
-            t.text = "Player green";
+            t.color = Color.red;
+            t.text = "Player red";
         }
         round++;
     }
