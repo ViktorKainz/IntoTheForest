@@ -68,68 +68,58 @@ public class TerrainField : MonoBehaviour
         {
             if (selected == this || type == TerrainType.Castle)
             {
-                if (selected == this || type == TerrainType.Castle)
-                {
-                    if (selected != null)
-                        selected.UnselectField();
-                    selected = null;
-                    return;
-                }
-
                 if (selected != null)
-                {
                     selected.UnselectField();
-                    selected = null;
-                    return;
-                }
+                selected = null;
+                return;
+            }
 
-                ClearSelection();
+            ClearSelection();
 
-                if (selected != null && selected.figure != null && IsMovable(selected))
+            if (selected != null && selected.figure != null && IsMovable(selected))
+            {
+                var r = range[selected.figure.GetComponent<GameFigure>().type];
+                if ((Math.Abs(selected.x - x) <= r && selected.y == y) ||
+                    (selected.x == x && Math.Abs(selected.y - y) <= r))
                 {
-                    var r = range[selected.figure.GetComponent<GameFigure>().type];
-                    if ((Math.Abs(selected.x - x) <= r && selected.y == y) ||
-                        (selected.x == x && Math.Abs(selected.y - y) <= r))
+                    var pos = new Vector2(x, y);
+                    // Move to empty field
+                    if (LevelGeneration.IsFieldEmpty(pos, level.getLevel()))
                     {
-                        var pos = new Vector2(x, y);
-                        // Move to empty field
-                        if (LevelGeneration.IsFieldEmpty(pos, level.getLevel()))
-                        {
-                            Debug.Log("Move");
-                            MoveFigure(selected);
-                            NextRound();
-                        }
-                        // Attack enemy field
-                        else if ((round % 2 != 0 && level.IsFieldEnemy(pos)) ||
-                                 (round % 2 == 0 && !LevelGeneration.IsFieldEmpty(pos, level.getLevel())))
-                        {
-                            Debug.Log("Attack");
-                            figure.GetComponent<GameFigure>().Kill();
-                            MoveFigure(selected);
-                            NextRound();
-                        }
-                        // Can not move to ally field
-                        else
-                        {
-                            Debug.Log("Ally");
-                        }
+                        Debug.Log("Move");
+                        MoveFigure(selected);
+                        NextRound();
                     }
-
-                    if (figure != null && IsMovable(this))
+                    // Attack enemy field
+                    else if ((round % 2 != 0 && level.IsFieldEnemy(pos)) ||
+                             (round % 2 == 0 && !LevelGeneration.IsFieldEmpty(pos, level.getLevel())))
                     {
-                        var r2 = range[figure.GetComponent<GameFigure>().type];
-                        for (var i = -r2; i <= r2; i++)
-                        {
-                            if (i == 0) continue;
-                            level.GetField(new Vector2(x + i, y))?.SelectMove();
-                            level.GetField(new Vector2(x, y + i))?.SelectMove();
-                        }
+                        Debug.Log("Attack");
+                        figure.GetComponent<GameFigure>().Kill();
+                        MoveFigure(selected);
+                        NextRound();
                     }
-
-                    selected = this;
-                    SelectSuccess();
+                    // Can not move to ally field
+                    else
+                    {
+                        Debug.Log("Ally");
+                    }
                 }
             }
+
+            if (figure != null && IsMovable(this))
+            {
+                var r = range[figure.GetComponent<GameFigure>().type];
+                for (var i = -r; i <= r; i++)
+                {
+                    if (i == 0) continue;
+                    level.GetField(new Vector2(x + i, y))?.SelectMove();
+                    level.GetField(new Vector2(x, y + i))?.SelectMove();
+                }
+            }
+
+            selected = this;
+            SelectSuccess();
         }
     }
 
@@ -230,7 +220,7 @@ public class TerrainField : MonoBehaviour
                !((f.figure.GetComponent<GameFigure>().enemy && round % 2 != 0) ||
                  (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
     }
-    
+
     public void closeAllCastleMenus()
     {
         Field[,] lvl = level.getLevel();
