@@ -678,9 +678,9 @@ MonoBehaviour:
   queenBt: {fileID: 8793459137459057105}
   knightBt: {fileID: 8793459136601993450}
   pawnBt: {fileID: 8793459137642776694}
-  queenPrefab: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
-  knightPrefab: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
-  pawnPrefab: {fileID: 2302422899857347386, guid: 6692891e30b8e124680a662324c3b444, type: 3}
+  queenPrefab: {fileID: 1152951579144713078, guid: 19ebbb2e0106ca848b4262f401f39f23, type: 3}
+  knightPrefab: {fileID: 7557454677194093324, guid: 17768766b9a4545469bbe8526e413025, type: 3}
+  pawnPrefab: {fileID: 3171486925021733535, guid: 394538f7b6f68b74c870be822d436140, type: 3}
   roundError: {fileID: 3755655713392063840}
   costError: {fileID: 6724979268119237243}
   allowSpawn: 1
