@@ -207,7 +207,7 @@ public class LevelGeneration : MonoBehaviour
         return new Vector2(-1, -1);
     }
 
-    private static bool IsFieldEmpty(Vector2 position, Field[,] level)
+    public static bool IsFieldEmpty(Vector2 position, Field[,] level)
     {
         try
         {
