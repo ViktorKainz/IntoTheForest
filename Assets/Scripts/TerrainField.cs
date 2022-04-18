@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TerrainField : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class TerrainField : MonoBehaviour
     private Color[][] _startColors;
     private Animator animator;
 
+
     void Start()
     {
         if (figure != null)
@@ -23,11 +25,16 @@ public class TerrainField : MonoBehaviour
 
     private void Update()
     {
-        if(figure != null)
+        movementAnimation();
+    }
+
+    private void movementAnimation()
+    {
+        if (figure != null)
         {
             figure.transform.parent = transform;
             // Animation
-            if(animator == null) 
+            if (animator == null)
             {
                 GameObject child = figure.transform.GetChild(0).gameObject;
                 animator = child.GetComponent<Animator>();
@@ -37,7 +44,7 @@ public class TerrainField : MonoBehaviour
                 animator.SetBool("Walk", true);
             }
             else
-            { 
+            {
                 animator.SetBool("Walk", false);
             }
         }
@@ -46,9 +53,11 @@ public class TerrainField : MonoBehaviour
                 new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
     }
 
+
     private void OnMouseUp()
     {
-        if(round == -1) return;
+        
+        if (round == -1) return;
         var selected = level.selected;
         if (selected == this || type == TerrainType.Castle)
         {
@@ -76,7 +85,13 @@ public class TerrainField : MonoBehaviour
                 // Attack enemy field
                 else if((round%2 != 0  && level.IsFieldEnemy(pos)) || (round%2 == 0 && !level.IsFieldEmpty(pos)))
                 {
+                    StartCoroutine(waitAnimation());
+
+                    selected.animator.SetBool("Fight", true);
+                    
+
                     Debug.Log("Attack");
+                    
                     figure.GetComponent<GameFigure>().Kill();
                     MoveFigure(selected);
                     NextRound();
@@ -93,6 +108,13 @@ public class TerrainField : MonoBehaviour
             SelectSuccess();
         else
             SelectError();
+    }
+
+    public IEnumerator waitAnimation()
+    {
+       
+        yield return new WaitForSeconds(3);
+       
     }
 
     private void MoveFigure(TerrainField field)
