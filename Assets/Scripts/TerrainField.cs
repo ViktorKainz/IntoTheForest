@@ -46,6 +46,7 @@ public class TerrainField : MonoBehaviour
 
     private void movementAnimation()
     {
+        animator = selected?.animator;
         if (figure != null)
         {
             figure.transform.parent = transform;
@@ -101,9 +102,9 @@ public class TerrainField : MonoBehaviour
                     else if ((round % 2 != 0 && level.IsFieldEnemy(pos)) ||
                              (round % 2 == 0 && !LevelGeneration.IsFieldEmpty(pos, level.getLevel())))
                     {
-                        animator.SetBool("Fight", true);
+                        selected.animator.SetBool("Fight", true);
                         StartCoroutine(waitAnimation());
-                        
+
                     }
                     // Can not move to ally field
                     else
@@ -131,13 +132,15 @@ public class TerrainField : MonoBehaviour
 
     public IEnumerator waitAnimation()
     {
-       
-        yield return new WaitForSeconds(2);
         Debug.Log("Attack");
+        yield return new WaitForSeconds(1.5f);
+       
+        selected.animator.SetBool("Fight", false);
         figure.GetComponent<GameFigure>().Kill();
         MoveFigure(selected);
         NextRound();
-       
+
+
     }
 
     private void MoveFigure(TerrainField field)
