@@ -22,7 +22,6 @@ public class LevelGeneration : MonoBehaviour
     public int numberCastles;
     public Vector3 size = new Vector3(200, 100, 200);
     public GameObject player;
-    public TerrainField selected;
 
     void Start()
     {
@@ -211,5 +210,17 @@ public class LevelGeneration : MonoBehaviour
     public bool IsFieldEnemy(Vector2 position)
     {
         return level[(int) position.x, (int) position.y].field.figure.GetComponent<GameFigure>().enemy;
+    }
+
+    public TerrainField GetField(Vector2 position)
+    {
+        try
+        {
+            return level[(int)position.x, (int)position.y].obj.GetComponent<TerrainField>();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 }

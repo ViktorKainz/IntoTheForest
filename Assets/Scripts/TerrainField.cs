@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +12,20 @@ public class TerrainField : MonoBehaviour
     public int y;
 
     public static float speed = 250f;
-    public static int round = 1;        //odd number player green even player red
+    public static int round = 1; //odd number player green even player red
 
     private Color[][] _startColors;
     private Animator animator;
+    private static TerrainField selected;
+    private static List<TerrainField> moveSelected = new List<TerrainField>();
+
+    private IDictionary<FigureType, int> range = new Dictionary<FigureType, int>()
+    {
+        { FigureType.King, 1 },
+        { FigureType.Pawn, 1 },
+        { FigureType.Knight, 2 },
+        { FigureType.Queen, 3 },
+    };
 
     void Start()
     {
@@ -23,24 +35,26 @@ public class TerrainField : MonoBehaviour
 
     private void Update()
     {
-        if(figure != null)
+        if (figure != null)
         {
             figure.transform.parent = transform;
             // Animation
-            if(animator == null) 
+            if (animator == null)
             {
                 GameObject child = figure.transform.GetChild(0).gameObject;
                 animator = child.GetComponent<Animator>();
             }
+
             if (figure.transform.position != new Vector3(x * level.size.x, 0, y * level.size.z))
             {
                 animator.SetBool("Walk", true);
             }
             else
-            { 
+            {
                 animator.SetBool("Walk", false);
             }
         }
+
         if (figure != null)
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
                 new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
@@ -48,22 +62,22 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if(round == -1) return;
-        var selected = level.selected;
+        if (round == -1) return;
         if (selected == this || type == TerrainType.Castle)
         {
             if (selected != null)
                 selected.UnselectField();
-            level.selected = null;
+            selected = null;
             return;
         }
 
-        if (selected != null)
+        ClearSelection();
+        
+        if (selected != null && selected.figure != null && IsMovable(selected))
         {
-            selected.UnselectField();
-            if (selected.figure != null && IsMovable(selected) &&
-                ((selected.x == x && (selected.y - 1 == y || selected.y + 1 == y)) ||
-                 (selected.y == y && (selected.x - 1 == x || selected.x + 1 == x))))
+            var r = range[selected.figure.GetComponent<GameFigure>().type];
+            if ((Math.Abs(selected.x - x) <= r && selected.y == y) ||
+                (selected.x == x && Math.Abs(selected.y - y) <= r))
             {
                 var pos = new Vector2(x, y);
                 // Move to empty field
@@ -74,7 +88,7 @@ public class TerrainField : MonoBehaviour
                     NextRound();
                 }
                 // Attack enemy field
-                else if((round%2 != 0  && level.IsFieldEnemy(pos)) || (round%2 == 0 && !level.IsFieldEmpty(pos)))
+                else if ((round % 2 != 0 && level.IsFieldEnemy(pos)) || (round % 2 == 0 && !level.IsFieldEmpty(pos)))
                 {
                     Debug.Log("Attack");
                     figure.GetComponent<GameFigure>().Kill();
@@ -88,11 +102,20 @@ public class TerrainField : MonoBehaviour
                 }
             }
         }
-        level.selected = this;
-        if (figure != null && IsMovable(selected))
-            SelectSuccess();
-        else
-            SelectError();
+
+        if (figure != null && IsMovable(this))
+        {
+            var r = range[figure.GetComponent<GameFigure>().type];
+            for (var i = -r; i <= r; i++)
+            {
+                if (i == 0) continue;
+                level.GetField(new Vector2(x + i, y))?.SelectMove();
+                level.GetField(new Vector2(x, y + i))?.SelectMove();
+            }
+        }
+
+        selected = this;
+        SelectSuccess();
     }
 
     private void MoveFigure(TerrainField field)
@@ -118,6 +141,7 @@ public class TerrainField : MonoBehaviour
             t.text = "";
             return;
         }
+
         if (round % 2 == 0)
         {
             t.color = Color.green;
@@ -128,17 +152,32 @@ public class TerrainField : MonoBehaviour
             t.color = Color.red;
             t.text = "Player red";
         }
+
         round++;
     }
 
     private void SelectSuccess()
     {
-        SelectField(Color.red);
+        SelectField(Color.yellow);
     }
 
     private void SelectError()
     {
-        SelectField(Color.yellow);
+        SelectField(Color.red);
+    }
+
+    public void SelectMove()
+    {
+        if (type == TerrainType.Castle)
+        {
+            SelectError();
+        }
+        else
+        {
+            SelectField(Color.cyan);
+        }
+
+        moveSelected.Add(this);
     }
 
     private void SelectField(Color color)
@@ -161,8 +200,12 @@ public class TerrainField : MonoBehaviour
         if (_startColors == null) return;
         var children = GetComponentsInChildren<Renderer>();
         for (var i = 0; i < children.Length; i++)
-        for (var j = 0; j < children[i].materials.Length; j++)
-            children[i].materials[j].color = _startColors[i][j];
+        {
+            if (i >= _startColors.Length)
+                break;
+            for (var j = 0; j < children[i].materials.Length; j++)
+                children[i].materials[j].color = _startColors[i][j];
+        }
     }
 
     private bool IsMovable(TerrainField f)
@@ -170,6 +213,21 @@ public class TerrainField : MonoBehaviour
         return f != null && f.figure != null &&
                !((f.figure.GetComponent<GameFigure>().enemy && round % 2 != 0) ||
                  (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
+    }
+
+    private void ClearSelection()
+    {
+        if (selected != null)
+        {
+            selected.UnselectField();
+        }
+
+        foreach (var f in moveSelected)
+        {
+            f.UnselectField();
+        }
+
+        moveSelected.Clear();
     }
 }
 
