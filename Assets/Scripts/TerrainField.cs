@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TerrainField : MonoBehaviour
@@ -63,9 +64,21 @@ public class TerrainField : MonoBehaviour
     private void OnMouseUp()
     {
         if (round == -1) return;
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
         if (selected == this || type == TerrainType.Castle)
         {
+            var selected = level.selected;
+            if (selected == this || type == TerrainType.Castle)
+            {
+                if (selected != null)
+                    selected.UnselectField();
+                level.selected = null;
+                return;
+            }
+
             if (selected != null)
+            {
                 selected.UnselectField();
             selected = null;
             return;
@@ -101,7 +114,6 @@ public class TerrainField : MonoBehaviour
                     Debug.Log("Ally");
                 }
             }
-        }
 
         if (figure != null && IsMovable(this))
         {
@@ -113,7 +125,6 @@ public class TerrainField : MonoBehaviour
                 level.GetField(new Vector2(x, y + i))?.SelectMove();
             }
         }
-
         selected = this;
         SelectSuccess();
     }
@@ -155,6 +166,7 @@ public class TerrainField : MonoBehaviour
 
         round++;
     }
+
 
     private void SelectSuccess()
     {
@@ -213,6 +225,18 @@ public class TerrainField : MonoBehaviour
         return f != null && f.figure != null &&
                !((f.figure.GetComponent<GameFigure>().enemy && round % 2 != 0) ||
                  (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
+    }
+    
+    public void closeAllCastleMenus()
+    {
+        Field[,] lvl = level.getLevel();
+        foreach (Field field in lvl)
+        {
+            if (field.plan == level.getTerrain().castle)
+            {
+                field.obj.GetComponent<SpawnFigure>().setInactive();
+            }
+        }
     }
 
     private void ClearSelection()

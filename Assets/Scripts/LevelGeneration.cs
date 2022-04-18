@@ -16,6 +16,7 @@ public class LevelGeneration : MonoBehaviour
 {
     private Field[,] level;
     private Terrains terrain;
+    
     public int levelSize;
     public float noiseScale = 1.1f;
     public float noiseSeed;
@@ -128,6 +129,8 @@ public class LevelGeneration : MonoBehaviour
             GameObject flag =
                 level[(int) castle1.x, (int) castle1.y].obj.transform.Find("Flag").gameObject;
             flag.GetComponent<Renderer>().material.color = Color.white;
+            level[(int) castle1.x, (int) castle1.y].obj.GetComponent<SpawnFigure>().setTeam(Team.White);
+
             foreach (Vector2 castle2 in castleLoc)
             {
                 float currentDistance = Vector2.Distance(castle1, castle2);
@@ -143,22 +146,24 @@ public class LevelGeneration : MonoBehaviour
         GameObject castleFlag =
             level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.green;
+        level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].obj.GetComponent<SpawnFigure>().setTeam(Team.Green);
 
         castleFlag = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.transform.Find("Flag").gameObject;
         castleFlag.GetComponent<Renderer>().material.color = Color.red;
+        level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].obj.GetComponent<SpawnFigure>().setTeam(Team.Red);
 
-        spawnAtCastle1 = RandomSpawnOffset(spawnAtCastle1);
-        var f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
+        spawnAtCastle1 = randomSpawnOffset(spawnAtCastle1, level);
+        TerrainField f = level[(int) spawnAtCastle1.x, (int) spawnAtCastle1.y].field;
         f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
         f.figure.GetComponent<GameFigure>().enemy = false;
 
-        spawnAtCastle2 = RandomSpawnOffset(spawnAtCastle2);
+        spawnAtCastle2 = randomSpawnOffset(spawnAtCastle2, level);
         f = level[(int) spawnAtCastle2.x, (int) spawnAtCastle2.y].field;
         f.figure = Instantiate(player, new Vector3(f.x * size.x, 0, f.y * size.z), Quaternion.Euler(0, 0, 0));
         f.figure.GetComponent<GameFigure>().enemy = true;
     }
 
-    public Vector2 RandomSpawnOffset(Vector2 position)
+    public static Vector2 randomSpawnOffset(Vector2 position, Field[,] level)
     {
         var newP = new Vector2();
         foreach (int option in Enumerable.Range(0, 8).OrderBy(x => Random.Range(0, 8)))
@@ -167,44 +172,51 @@ public class LevelGeneration : MonoBehaviour
             {
                 case 0:
                     newP = new Vector2(position.x - 1, position.y);
-                    if (position.x > 0 && IsFieldEmpty(newP)) return newP;
+                    if (position.x > 0 && IsFieldEmpty(newP, level)) return newP;
                     continue;
                 case 1:
                     newP = new Vector2(position.x, position.y - 1);
-                    if (position.y > 0 && IsFieldEmpty(newP)) return newP;
+                    if (position.y > 0 && IsFieldEmpty(newP, level)) return newP;
                     continue;   
                 case 2:
                     newP = new Vector2(position.x + 1, position.y);
-                    if (position.x < levelSize - 1 && IsFieldEmpty(newP)) return newP;
+                    if (position.x < level.Length - 1 && IsFieldEmpty(newP, level)) return newP;
                     continue;
                 case 3:
                     newP = new Vector2(position.x, position.y + 1);
-                    if (position.y < levelSize - 1 && IsFieldEmpty(newP)) return newP;
+                    if (position.y < level.Length - 1 && IsFieldEmpty(newP, level)) return newP;
                     continue;
                 case 4:
                     newP = new Vector2(position.x - 1, position.y - 1);
-                    if (position.x > 0 && position.y > 0 && IsFieldEmpty(newP)) return newP;
+                    if (position.x > 0 && position.y > 0 && IsFieldEmpty(newP, level)) return newP;
                     continue;
                 case 5:
                     newP = new Vector2(position.x + 1, position.y - 1);
-                    if(position.x < levelSize - 1 && position.y > 0 && IsFieldEmpty(newP)) return newP;
+                    if(position.x < level.Length - 1 && position.y > 0 && IsFieldEmpty(newP, level)) return newP;
                     continue;
                 case 6:
                     newP = new Vector2(position.x - 1, position.y + 1);
-                    if (position.x > 0 && position.y < levelSize - 1 && IsFieldEmpty(newP)) return newP;
+                    if (position.x > 0 && position.y < level.Length - 1 && IsFieldEmpty(newP, level)) return newP;
                     continue;
                 case 7:
                     newP = new Vector2(position.x + 1, position.y + 1);
-                    if (position.x < levelSize - 1 && position.y < levelSize - 1 && IsFieldEmpty(newP)) return newP;
+                    if (position.x < level.Length - 1 && position.y < level.Length - 1 && IsFieldEmpty(newP, level)) return newP;
                     continue;
             }
         }
         return new Vector2(-1, -1);
     }
 
-    public bool IsFieldEmpty(Vector2 position)
+    private static bool IsFieldEmpty(Vector2 position, Field[,] level)
     {
-        return level[(int) position.x, (int) position.y].field.figure == null;
+        try
+        {
+            return level[(int)position.x, (int)position.y].field.figure == null;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            return false;
+        }
     }
     
     public bool IsFieldEnemy(Vector2 position)
@@ -223,4 +235,15 @@ public class LevelGeneration : MonoBehaviour
             return null;
         }
     }
+    
+    public Field[,] getLevel()
+    {
+        return level;
+    }    
+    
+    public Terrains getTerrain()
+    {
+        return terrain;
+    }
+
 }
