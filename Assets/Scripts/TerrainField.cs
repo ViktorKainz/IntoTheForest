@@ -91,16 +91,32 @@ public class TerrainField : MonoBehaviour
                     (selected.x == x && Math.Abs(selected.y - y) <= r))
                 {
                     var pos = new Vector2(x, y);
-                    // Move to empty field
+                    // Capture castle
                     if (type == TerrainType.Castle)
                     {
-                        selected.animator.SetBool("Fight", true);
                         var enemy = selected.figure.GetComponent<GameFigure>().enemy;
+                        var s = gameObject.GetComponent<SpawnFigure>();
+                        var t = s.getTeam();
+                        s.setTeam(enemy ? Team.Red : Team.Green);
+                        selected.animator.SetBool("Fight", true);
                         gameObject.transform.Find("Flag").gameObject.GetComponent<Renderer>().material.color =
                             enemy ? Color.red : Color.green;
-                        gameObject.GetComponent<SpawnFigure>().setTeam(enemy ? Team.Red : Team.Green);
+
+                        if (t != s.getTeam())
+                        {
+                            if (s.getTeam() == Team.Green)
+                            {
+                                SpawnFigureCanvas.castlesGreen++;
+                            }
+                            else if (s.getTeam() == Team.Green)
+                            {
+                                SpawnFigureCanvas.castlesRed++;
+                            }
+                        }
+
                         NextRound();
                     }
+                    // Move to empty field
                     else if (LevelGeneration.IsFieldEmpty(pos, level.getLevel()))
                     {
                         Debug.Log("Move");
