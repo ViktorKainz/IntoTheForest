@@ -29,7 +29,7 @@ namespace DefaultNamespace
         public static int pointsGreen = 1;
         public static int pointsRed = 0;
         public static int castlesGreen = 1;
-        public static int castlesRed = 0;
+        public static int castlesRed = 1;
         
         private Vector3 size = new Vector3(200, 100, 200);
         private int oldRound = 0;

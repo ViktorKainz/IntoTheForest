@@ -107,10 +107,18 @@ public class TerrainField : MonoBehaviour
                             if (s.getTeam() == Team.Green)
                             {
                                 SpawnFigureCanvas.castlesGreen++;
+                                if (t != Team.White)
+                                {
+                                    SpawnFigureCanvas.castlesRed--;
+                                }
                             }
-                            else if (s.getTeam() == Team.Green)
+                            else if (s.getTeam() == Team.Red)
                             {
                                 SpawnFigureCanvas.castlesRed++;
+                                if (t != Team.White)
+                                {
+                                    SpawnFigureCanvas.castlesGreen--;
+                                }
                             }
                         }
 
