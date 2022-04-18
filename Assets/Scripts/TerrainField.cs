@@ -32,19 +32,6 @@ public class TerrainField : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
         {
             var selected = level.selected;
-            //Deactivate FigureCanvas from every castle
-            if (selected == null)
-            {
-                Field[,] lvl = level.getLevel();
-                foreach (Field field in lvl)
-                {
-                    if (field.plan == level.getTerrain().castle)
-                    {
-                        field.obj.GetComponent<SpawnFigure>().setInactive();
-                    }
-                }
-            }
-
             if (selected == this || type == TerrainType.Castle)
             {
                 if (selected != null)
@@ -130,6 +117,18 @@ public class TerrainField : MonoBehaviour
         return f != null && f.figure != null &&
                !((f.figure.GetComponent<GameFigure>().enemy && round % 2 != 0) ||
                  (!f.figure.GetComponent<GameFigure>().enemy && round % 2 == 0));
+    }
+    
+    public void closeAllCastleMenus()
+    {
+        Field[,] lvl = level.getLevel();
+        foreach (Field field in lvl)
+        {
+            if (field.plan == level.getTerrain().castle)
+            {
+                field.obj.GetComponent<SpawnFigure>().setInactive();
+            }
+        }
     }
 }
 
