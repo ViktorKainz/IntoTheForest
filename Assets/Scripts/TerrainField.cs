@@ -73,7 +73,7 @@ public class TerrainField : MonoBehaviour
         if (round == -1) return;
         if (EventSystem.current.IsPointerOverGameObject())
         {
-            if (selected == this || type == TerrainType.Castle)
+            if (selected == this)
             {
                 if (selected != null)
                     selected.UnselectField();
@@ -91,7 +91,16 @@ public class TerrainField : MonoBehaviour
                 {
                     var pos = new Vector2(x, y);
                     // Move to empty field
-                    if (LevelGeneration.IsFieldEmpty(pos, level.getLevel()))
+                    if (type == TerrainType.Castle)
+                    {
+                        selected.animator.SetBool("Fight", true);
+                        var enemy = selected.figure.GetComponent<GameFigure>().enemy;
+                        gameObject.transform.Find("Flag").gameObject.GetComponent<Renderer>().material.color =
+                            enemy ? Color.red : Color.green;
+                        gameObject.GetComponent<SpawnFigure>().setTeam(enemy ? Team.Red : Team.Green);
+                        NextRound();
+                    }
+                    else if (LevelGeneration.IsFieldEmpty(pos, level.getLevel()))
                     {
                         Debug.Log("Move");
                         MoveFigure(selected);
@@ -101,9 +110,8 @@ public class TerrainField : MonoBehaviour
                     else if ((round % 2 != 0 && level.IsFieldEnemy(pos)) ||
                              (round % 2 == 0 && !LevelGeneration.IsFieldEmpty(pos, level.getLevel())))
                     {
-                        animator.SetBool("Fight", true);
+                        selected.animator.SetBool("Fight", true);
                         StartCoroutine(waitAnimation());
-                        
                     }
                     // Can not move to ally field
                     else
@@ -111,6 +119,14 @@ public class TerrainField : MonoBehaviour
                         Debug.Log("Ally");
                     }
                 }
+            }
+
+            if (type == TerrainType.Castle)
+            {
+                if (selected != null)
+                    selected.UnselectField();
+                selected = null;
+                return;
             }
 
             if (figure != null && IsMovable(this))
@@ -131,13 +147,11 @@ public class TerrainField : MonoBehaviour
 
     public IEnumerator waitAnimation()
     {
-       
         yield return new WaitForSeconds(2);
         Debug.Log("Attack");
         figure.GetComponent<GameFigure>().Kill();
         MoveFigure(selected);
         NextRound();
-       
     }
 
     private void MoveFigure(TerrainField field)
