@@ -29,6 +29,7 @@ public class TerrainField : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if(round == -1) return;
         var selected = level.selected;
         if (selected == this || type == TerrainType.Castle)
         {
@@ -92,8 +93,12 @@ public class TerrainField : MonoBehaviour
 
     private void NextRound()
     {
-        round++;
         Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
+        if (round == -1)
+        {
+            t.text = "";
+            return;
+        }
         if (round % 2 == 0)
         {
             t.color = Color.red;
@@ -104,6 +109,7 @@ public class TerrainField : MonoBehaviour
             t.color = Color.green;
             t.text = "Player green";
         }
+        round++;
     }
 
     private void SelectSuccess()

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameFigure : MonoBehaviour
 {
@@ -28,6 +29,21 @@ public class GameFigure : MonoBehaviour
         var pos = t.position;
         pos.y = -1000;
         t.position = pos;
+        if (type == FigureType.King)
+        {
+            var text = GameObject.FindWithTag("VictoryText").GetComponent<Text>();
+            if (enemy)
+            {
+                text.color = Color.green;
+                text.text = "Player green has won";
+            }
+            else
+            {
+                text.color = Color.red;
+                text.text = "Player red has won";
+            }
+            TerrainField.round = -1;
+        }
     } 
 }
 
