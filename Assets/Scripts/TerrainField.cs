@@ -9,10 +9,11 @@ public class TerrainField : MonoBehaviour
     public int x;
     public int y;
 
-    public static float speed = 100f;
+    public static float speed = 250f;
     public static int round = 1;        //odd number player green even player red
 
     private Color[][] _startColors;
+    private Animator animator;
 
     void Start()
     {
@@ -22,6 +23,24 @@ public class TerrainField : MonoBehaviour
 
     private void Update()
     {
+        if(figure != null)
+        {
+            figure.transform.parent = transform;
+            // Animation
+            if(animator == null) 
+            {
+                GameObject child = figure.transform.GetChild(0).gameObject;
+                animator = child.GetComponent<Animator>();
+            }
+            if (figure.transform.position != new Vector3(x * level.size.x, 0, y * level.size.z))
+            {
+                animator.SetBool("Walk", true);
+            }
+            else
+            { 
+                animator.SetBool("Walk", false);
+            }
+        }
         if (figure != null)
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
                 new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
