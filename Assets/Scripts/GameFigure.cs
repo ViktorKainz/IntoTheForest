@@ -21,5 +21,7 @@ public class GameFigure : MonoBehaviour
 public enum FigureType
 {
     King,
-    Pawn
+    Pawn,
+    Queen,
+    Knight
 }

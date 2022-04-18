@@ -8,7 +8,7 @@ public class TerrainField : MonoBehaviour
     public int x;
     public int y;
 
-    public static float speed = 100f;
+    public static float speed = 250f;
     public static int round = 1;
 
     private Color[][] _startColors;
@@ -44,7 +44,6 @@ public class TerrainField : MonoBehaviour
         if (figure != null)
             figure.transform.position = Vector3.MoveTowards(figure.transform.position,
                 new Vector3(x * level.size.x, 0, y * level.size.z), Time.deltaTime * speed);
-        }
     }
 
     private void OnMouseUp()
