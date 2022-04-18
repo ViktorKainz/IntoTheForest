@@ -200,11 +200,11 @@ public class TerrainField : MonoBehaviour
 
         if (round % 2 == 0)
         {
-            SpawnFigureCanvas.pointsRed += 1;
+            SpawnFigureCanvas.pointsRed += SpawnFigureCanvas.castlesRed;
         }
         else
         {
-            SpawnFigureCanvas.pointsGreen += 1;
+            SpawnFigureCanvas.pointsGreen += SpawnFigureCanvas.castlesGreen;
         }
 
         UpdateCurrentPlayerInfo();
