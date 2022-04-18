@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
+using DefaultNamespace;
 
 public class TerrainField : MonoBehaviour
 {
@@ -174,6 +175,8 @@ public class TerrainField : MonoBehaviour
 
     private void NextRound()
     {
+        round++;
+        closeAllCastleMenus();
         Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
         if (round == -1)
         {
@@ -183,16 +186,15 @@ public class TerrainField : MonoBehaviour
 
         if (round % 2 == 0)
         {
-            t.color = Color.green;
-            t.text = "Player green";
+            SpawnFigureCanvas.pointsRed += 1;
         }
         else
         {
-            t.color = Color.red;
-            t.text = "Player red";
+            SpawnFigureCanvas.pointsGreen += 1;
         }
 
-        round++;
+
+    updateCurrentPlayerInfo();
     }
 
 
@@ -280,6 +282,21 @@ public class TerrainField : MonoBehaviour
         }
 
         moveSelected.Clear();
+    }
+
+    public static void updateCurrentPlayerInfo()
+    {
+        Text t = GameObject.FindWithTag("PlayerText").GetComponent<Text>();
+        if (round % 2 == 0)
+        {
+            t.color = Color.red;
+            t.text = "Player red: " + SpawnFigureCanvas.pointsRed;
+        }
+        else
+        {
+            t.color = Color.green;
+            t.text = "Player green: " + SpawnFigureCanvas.pointsGreen;
+        }
     }
 }
 

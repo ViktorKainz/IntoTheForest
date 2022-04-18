@@ -26,8 +26,8 @@ namespace DefaultNamespace
 
         public GameObject castle;
         
-        public static int pointsGreen;
-        public static int pointsRed;
+        public static int pointsGreen = 1;
+        public static int pointsRed = 0;
         
         private Vector3 size = new Vector3(200, 100, 200);
         private int oldRound = 0;
@@ -54,6 +54,7 @@ namespace DefaultNamespace
 
         void spawnRandomAroundCastle(GameObject spawnFigure, int cost)
         {
+            Debug.Log("Green: " + pointsGreen + ", Red: " + pointsRed);
             if (round % 2 == 1)
             {
                 if (pointsGreen < cost)
@@ -62,6 +63,7 @@ namespace DefaultNamespace
                     return;
                 }
                 pointsGreen -= cost;
+                updateCurrentPlayerInfo();
             }
             else
             {
@@ -71,6 +73,7 @@ namespace DefaultNamespace
                     return;
                 }
                 pointsRed -= cost;
+                updateCurrentPlayerInfo();
             }
             
             if (allowSpawn)
